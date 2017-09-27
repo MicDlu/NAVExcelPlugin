@@ -44,10 +44,7 @@ namespace NSC3_FastTableEdit
 
         private void button_SendToNAV_Click(object sender, RibbonControlEventArgs e)
         {
-            Excel.Worksheet activeWorksheet = Globals.ThisAddIn.Application.ActiveSheet;
-            Excel.Range usedRange = activeWorksheet.UsedRange.Rows;
-            usedRange.Columns.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Yellow);
-
+            Class_ValidateRecords.SelectRows();
         }
 
         private void buttonSetConnection_Click(object sender, RibbonControlEventArgs e)

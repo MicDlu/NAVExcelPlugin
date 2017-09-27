@@ -38,7 +38,8 @@
             this.textBox_Instance = new System.Windows.Forms.TextBox();
             this.button_OK = new System.Windows.Forms.Button();
             this.button_Cancel = new System.Windows.Forms.Button();
-            this.button_Test = new System.Windows.Forms.Button();
+            this.button_Save = new System.Windows.Forms.Button();
+            this.textBox_Save = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // textBox_Server
@@ -114,6 +115,7 @@
             this.button_OK.TabIndex = 9;
             this.button_OK.Text = "OK";
             this.button_OK.UseVisualStyleBackColor = true;
+            this.button_OK.Click += new System.EventHandler(this.button_OK_Click);
             // 
             // button_Cancel
             // 
@@ -125,21 +127,30 @@
             this.button_Cancel.Text = "Cancel";
             this.button_Cancel.UseVisualStyleBackColor = true;
             // 
-            // button_Test
+            // button_Save
             // 
-            this.button_Test.Location = new System.Drawing.Point(12, 226);
-            this.button_Test.Name = "button_Test";
-            this.button_Test.Size = new System.Drawing.Size(156, 23);
-            this.button_Test.TabIndex = 11;
-            this.button_Test.Text = "Test connection";
-            this.button_Test.UseVisualStyleBackColor = true;
+            this.button_Save.Location = new System.Drawing.Point(12, 226);
+            this.button_Save.Name = "button_Save";
+            this.button_Save.Size = new System.Drawing.Size(156, 23);
+            this.button_Save.TabIndex = 11;
+            this.button_Save.Text = "Save connection";
+            this.button_Save.UseVisualStyleBackColor = true;
+            this.button_Save.Click += new System.EventHandler(this.button_Save_Click);
+            // 
+            // textBox_Save
+            // 
+            this.textBox_Save.Location = new System.Drawing.Point(12, 200);
+            this.textBox_Save.Name = "textBox_Save";
+            this.textBox_Save.Size = new System.Drawing.Size(156, 20);
+            this.textBox_Save.TabIndex = 12;
             // 
             // Form_Connection
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(420, 261);
-            this.Controls.Add(this.button_Test);
+            this.Controls.Add(this.textBox_Save);
+            this.Controls.Add(this.button_Save);
             this.Controls.Add(this.button_Cancel);
             this.Controls.Add(this.button_OK);
             this.Controls.Add(this.textBox_Port);
@@ -170,6 +181,7 @@
         private System.Windows.Forms.TextBox textBox_Instance;
         private System.Windows.Forms.Button button_OK;
         private System.Windows.Forms.Button button_Cancel;
-        private System.Windows.Forms.Button button_Test;
+        private System.Windows.Forms.Button button_Save;
+        private System.Windows.Forms.TextBox textBox_Save;
     }
 }

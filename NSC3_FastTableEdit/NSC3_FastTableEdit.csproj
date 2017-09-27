@@ -158,6 +158,7 @@
   <ItemGroup>
     <Compile Include="Class_Connection.cs" />
     <Compile Include="Class_Table.cs" />
+    <Compile Include="Class_ValidateRecords.cs" />
     <Compile Include="Form_Connection.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -29,5 +29,17 @@ namespace NSC3_FastTableEdit
             textBox_Firm.Text = Class_Connection.connection_Firm;
             textBox_Port.Text = Class_Connection.connection_Port;
         }
+
+        private void button_OK_Click(object sender, EventArgs e)
+        {
+            SetConnectionParams();
+        }
+
+        private void button_Save_Click(object sender, EventArgs e)
+        {
+            SetConnectionParams();
+            if (true)   //  test
+                Class_Connection.SaveConnection(textBox_Save.Text);
+        }
     }
 }
