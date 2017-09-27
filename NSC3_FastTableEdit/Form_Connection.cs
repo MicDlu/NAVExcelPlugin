@@ -39,7 +39,22 @@ namespace NSC3_FastTableEdit
         {
             SetConnectionParams();
             if (true)   //  test
-                Class_Connection.SaveConnection(textBox_Save.Text);
+                Class_Connection.SaveConnection(comboBox_Templates.Text);
+        }
+
+        private void comboBox_Templates_DropDown(object sender, EventArgs e)
+        {
+            comboBox_Templates.Items.Clear();
+            comboBox_Templates.Items.AddRange(Class_Connection.GetTemplateList().ToArray());
+        }
+
+        private void comboBox_Templates_SelectedValueChanged(object sender, EventArgs e)
+        {
+            Class_Connection.GetConnection(comboBox_Templates.Text);
+            textBox_Server.Text = Class_Connection.connection_Server;
+            textBox_Instance.Text = Class_Connection.connection_Instance;
+            textBox_Firm.Text = Class_Connection.connection_Firm;
+            textBox_Port.Text = Class_Connection.connection_Port;
         }
     }
 }
