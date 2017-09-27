@@ -1,7 +1,9 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="NSC3_FastTableEdit.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="NSC3_FastTableEdit_Fields_Fields_Service" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://srv-nav:7038/NAV2016PL/WS/CRONUS%20Polska%20Sp.%20z%20o.o./Page/Fields</Value>
+    </Setting>
+  </Settings>
 </SettingsFile>

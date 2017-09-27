@@ -103,6 +103,8 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Services" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -168,7 +170,7 @@
     <Compile Include="Form_TableColumnsLoad.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form_TableColumnsLoad.Designer.cs">
+    <Compile Include="Form_TableColumnsLoad.designer.cs">
       <DependentUpon>Form_TableColumnsLoad.cs</DependentUpon>
     </Compile>
     <Compile Include="NSC3_Ribbon.cs">
@@ -180,8 +182,19 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Web References\NAVFieldsService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Form_Connection.resx">
       <DependentUpon>Form_Connection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_TableColumnsLoad.en-US.resx">
+      <DependentUpon>Form_TableColumnsLoad.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_TableColumnsLoad.pl-PL.resx">
+      <DependentUpon>Form_TableColumnsLoad.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form_TableColumnsLoad.resx">
       <DependentUpon>Form_TableColumnsLoad.cs</DependentUpon>
@@ -199,6 +212,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="app.config" />
     <None Include="NSC3_FastTableEdit_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -207,6 +221,7 @@
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="ThisAddIn.cs">
       <SubType>Code</SubType>
@@ -218,6 +233,14 @@
       <DependentUpon>ThisAddIn.Designer.xml</DependentUpon>
     </Compile>
     <AppDesigner Include="Properties\" />
+    <None Include="Web References\NAVFieldsService\Fields.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\NAVFieldsService\Fields.wsdl" />
+    <None Include="Web References\NAVFieldsService\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\browser.png" />
@@ -227,6 +250,26 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\startup.png" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="http://srv-nav:7038/NAV2016PL/WS/CRONUS%2520Polska%2520Sp.%2520z%2520o.o./Page/Fields">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\NAVFieldsService\</RelPath>
+      <UpdateFromURL>http://srv-nav:7038/NAV2016PL/WS/CRONUS%2520Polska%2520Sp.%2520z%2520o.o./Page/Fields</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>NSC3_FastTableEdit_Fields_Fields_Service</CachedSettingsPropName>
+    </WebReferenceUrl>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
