@@ -39,7 +39,11 @@ namespace NSC3_FastTableEdit
 
             if (fileContent.Contains(templateContent[0]))
             {
-                DialogResult dialogResult = MessageBox.Show("Do you want to overwrite?", "Template overwrite", MessageBoxButtons.YesNo);
+                string oldTemplate = "-" + string.Join("\n-", tableFieldList.ToArray());
+                string newTemplate = "-" + string.Join("\n-", templateContent.Skip(1).ToArray());
+                string dialogText = "Do you want to overwrite template \"" + templateName + "\"?\n\n" + oldTemplate + "\n\nwith\n\n" + newTemplate;
+                string dialogTitle = "\"" + templateName + "\" template overwrite";
+                DialogResult dialogResult = MessageBox.Show(dialogText, dialogTitle, MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.No)
                     return false;
 
