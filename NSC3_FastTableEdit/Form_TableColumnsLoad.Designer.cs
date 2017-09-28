@@ -161,6 +161,7 @@
             this.MoveItemDown.TabIndex = 11;
             this.MoveItemDown.Text = "Move Down";
             this.MoveItemDown.UseVisualStyleBackColor = true;
+            this.MoveItemDown.Click += new System.EventHandler(this.MoveItemDown_Click);
             // 
             // groupBox_Templates
             // 
