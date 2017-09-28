@@ -14,14 +14,15 @@ namespace NSC3_FastTableEdit
 
         static public string connection_Server;
         static public string connection_Instance;
-        static public string connection_Firm;
+        static public string connection_Company;
         static public string connection_Port;
+        static public NAVFieldsService.Fields_Service navFieldsService = new NAVFieldsService.Fields_Service();
 
         static public void SetConnection(string server, string instance, string firm, string port)
         {
             connection_Server = server;
             connection_Instance = instance;
-            connection_Firm = firm;
+            connection_Company = firm;
             connection_Port = port;
         }
 
@@ -35,7 +36,7 @@ namespace NSC3_FastTableEdit
             string[] ConnectionContent = new string[] { "#" + ConnectionName,
                 "Server\t#" + connection_Server,
                 "Instance\t#" + connection_Instance,
-                "Firm\t\t#" + connection_Firm,
+                "Firm\t\t#" + connection_Company,
                 "Port\t\t#" + connection_Port, "" };
             string[] fileContent = System.IO.File.ReadAllLines(connectionPath);
 
@@ -44,7 +45,7 @@ namespace NSC3_FastTableEdit
                 int index = Array.IndexOf(fileContent, ConnectionContent[0]);
                 fileContent[index + 1] = "Server\t#" + connection_Server;
                 fileContent[index + 2] = "Instance\t#" + connection_Instance;
-                fileContent[index + 3] = "Firm\t\t#" + connection_Firm;
+                fileContent[index + 3] = "Firm\t\t#" + connection_Company;
                 fileContent[index + 4] = "Port\t\t#" + connection_Port;
                 System.IO.File.WriteAllLines(connectionPath, fileContent);
             }
@@ -78,9 +79,26 @@ namespace NSC3_FastTableEdit
             int index = Array.IndexOf(fileContent, "#" + ConnectionName);
             connection_Server = fileContent[index + 1].Substring(fileContent[index + 1].IndexOf('#') + 1);
             connection_Instance = fileContent[index + 2].Substring(fileContent[index + 2].IndexOf('#') + 1);
-            connection_Firm = fileContent[index + 3].Substring(fileContent[index + 3].IndexOf('#') + 1);
+            connection_Company = fileContent[index + 3].Substring(fileContent[index + 3].IndexOf('#') + 1);
             connection_Port = fileContent[index + 4].Substring(fileContent[index + 4].IndexOf('#') + 1);
             return true;
+        }
+
+        static public void ConnectToWebService(string objectType = "Page", string objectName = "Fields")
+        {
+            //TimeRegisterMgt_Binding TimeRegisterMgt = new TimeRegisterMgt_Binding();
+            //string companyname = System.Uri.EscapeDataString(GetVariable("CompanyName").Trim());
+            //TimeRegisterMgt.Url = "http://" + GetVariable("Server") + ":" + GetVariable("WebServicePort") + "/" + GetVariable("ServerInstance") + " / WS / " + companyname + " / Codeunit / TimeRegisterMgt";
+            //TimeRegisterMgt.UseDefaultCredentials = true; 
+
+            string companyname = System.Uri.EscapeDataString(connection_Company.Trim());
+            navFieldsService.Url = @"http://" + connection_Server + @":" + connection_Port + @"/" + connection_Instance + @"/WS/" + companyname + @"/" + objectType + @"/" + objectName;
+            Class_Connection.navFieldsService.UseDefaultCredentials = true;
+        }
+
+        static bool TestConnection()
+        {
+            return false;
         }
     }
 }

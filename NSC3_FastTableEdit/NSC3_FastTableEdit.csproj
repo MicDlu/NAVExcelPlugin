@@ -259,10 +259,10 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="http://SRV-nav:7058/NAV2016PL/WS/CRONUS%2520Polska%2520Sp.%2520z%2520o.o./Page/Fields">
+    <WebReferenceUrl Include="http://srv-nav:7038/NAV2016PL/WS/CRONUS%2520Polska%2520Sp.%2520z%2520o.o./Page/Fields">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\NAVFieldsService\</RelPath>
-      <UpdateFromURL>http://SRV-nav:7058/NAV2016PL/WS/CRONUS%2520Polska%2520Sp.%2520z%2520o.o./Page/Fields</UpdateFromURL>
+      <UpdateFromURL>http://srv-nav:7038/NAV2016PL/WS/CRONUS%2520Polska%2520Sp.%2520z%2520o.o./Page/Fields</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>

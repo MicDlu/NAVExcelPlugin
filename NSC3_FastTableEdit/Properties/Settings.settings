@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="NSC3_FastTableEdit_Fields_Fields_Service" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://srv-nav:7058/NAV2016PL/WS/CRONUS%20Polska%20Sp.%20z%20o.o./Page/Fields</Value>
+      <Value Profile="(Default)">http://srv-nav:7038/NAV2016PL/WS/CRONUS%20Polska%20Sp.%20z%20o.o./Page/Fields</Value>
     </Setting>
   </Settings>
 </SettingsFile>

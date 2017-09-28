@@ -26,13 +26,14 @@ namespace NSC3_FastTableEdit
         {
             textBox_Server.Text = Class_Connection.connection_Server;
             textBox_Instance.Text = Class_Connection.connection_Instance;
-            textBox_Firm.Text = Class_Connection.connection_Firm;
+            textBox_Firm.Text = Class_Connection.connection_Company;
             textBox_Port.Text = Class_Connection.connection_Port;
         }
 
         private void button_OK_Click(object sender, EventArgs e)
         {
             SetConnectionParams();
+            Class_Connection.ConnectToWebService();
         }
 
         private void button_Save_Click(object sender, EventArgs e)
@@ -53,7 +54,7 @@ namespace NSC3_FastTableEdit
             Class_Connection.GetConnection(comboBox_Templates.Text);
             textBox_Server.Text = Class_Connection.connection_Server;
             textBox_Instance.Text = Class_Connection.connection_Instance;
-            textBox_Firm.Text = Class_Connection.connection_Firm;
+            textBox_Firm.Text = Class_Connection.connection_Company;
             textBox_Port.Text = Class_Connection.connection_Port;
         }
     }
