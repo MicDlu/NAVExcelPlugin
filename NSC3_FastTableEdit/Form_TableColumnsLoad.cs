@@ -39,9 +39,9 @@ namespace NSC3_FastTableEdit
                 {
                     this.listBox_Columns.SetSelected(index, true);
                 }
-                else 
+                else
                 {
-                    if(this.listBox_Columns.Items.Count > 0)
+                    if (this.listBox_Columns.Items.Count > 0)
                         this.listBox_Columns.SetSelected(this.listBox_Columns.Items.Count - 1, true);
                 }
             }
@@ -54,7 +54,7 @@ namespace NSC3_FastTableEdit
                 int index = this.listBox_ChosenColumns.SelectedIndex;
                 this.listBox_ChosenColumns.Items.RemoveAt(this.listBox_ChosenColumns.SelectedIndex);
                 string[] comparer = new string[this.listBox_ChosenColumns.Items.Count];
-                this.listBox_ChosenColumns.Items.CopyTo(comparer,0);
+                this.listBox_ChosenColumns.Items.CopyTo(comparer, 0);
                 this.listBox_Columns.Items.Clear();
                 this.listBox_Columns.Items.AddRange(currentTableFieldList.Except(comparer).ToArray());
 
@@ -77,6 +77,15 @@ namespace NSC3_FastTableEdit
             this.listBox_ChosenColumns.Items.RemoveAt(index);
             this.listBox_ChosenColumns.Items.Insert(index - 1, temp);
             this.listBox_ChosenColumns.SetSelected(index - 1, true);
+        }
+
+        private void MoveItemDown_Click(object sender, EventArgs e)
+        {
+            string temp = this.listBox_ChosenColumns.SelectedItem.ToString();
+            int index = this.listBox_ChosenColumns.SelectedIndex;
+            this.listBox_ChosenColumns.Items.RemoveAt(index);
+            this.listBox_ChosenColumns.Items.Insert(index + 1, temp);
+            this.listBox_ChosenColumns.SetSelected(index + 1, true);
         }
 
         private void comboBox_Templates_DropDown(object sender, EventArgs e)
