@@ -72,20 +72,44 @@ namespace NSC3_FastTableEdit
 
         private void MoveItemUp_Click(object sender, EventArgs e)
         {
-            string temp = this.listBox_ChosenColumns.SelectedItem.ToString();
-            int index = this.listBox_ChosenColumns.SelectedIndex;
-            this.listBox_ChosenColumns.Items.RemoveAt(index);
-            this.listBox_ChosenColumns.Items.Insert(index - 1, temp);
-            this.listBox_ChosenColumns.SetSelected(index - 1, true);
+            if (this.listBox_ChosenColumns.SelectedIndex != 0 && this.listBox_ChosenColumns.Items.Count > 0)
+            {
+                string temp = this.listBox_ChosenColumns.SelectedItem.ToString();
+                int index = this.listBox_ChosenColumns.SelectedIndex;
+                this.listBox_ChosenColumns.Items.RemoveAt(index);
+                this.listBox_ChosenColumns.Items.Insert(index - 1, temp);
+                this.listBox_ChosenColumns.SetSelected(index - 1, true);
+            }
         }
 
         private void MoveItemDown_Click(object sender, EventArgs e)
         {
-            string temp = this.listBox_ChosenColumns.SelectedItem.ToString();
-            int index = this.listBox_ChosenColumns.SelectedIndex;
-            this.listBox_ChosenColumns.Items.RemoveAt(index);
-            this.listBox_ChosenColumns.Items.Insert(index + 1, temp);
-            this.listBox_ChosenColumns.SetSelected(index + 1, true);
+            if(this.listBox_ChosenColumns.SelectedIndex != this.listBox_ChosenColumns.Items.Count - 1 && this.listBox_ChosenColumns.Items.Count > 0)
+            {
+                string temp = this.listBox_ChosenColumns.SelectedItem.ToString();
+                int index = this.listBox_ChosenColumns.SelectedIndex;
+                this.listBox_ChosenColumns.Items.RemoveAt(index);
+                this.listBox_ChosenColumns.Items.Insert(index + 1, temp);
+                this.listBox_ChosenColumns.SetSelected(index + 1, true);
+            }
+        }
+
+        private void ChooseAllColumns(object sender, EventArgs e)
+        {
+            if(this.listBox_Columns.Items.Count > 0)
+            {
+                this.listBox_ChosenColumns.Items.AddRange(this.listBox_Columns.Items);
+                this.listBox_Columns.Items.Clear();
+            }
+        }
+
+        private void RevertAllColumns(object sender, EventArgs e)
+        {
+            if(this.currentTableFieldList != null)
+            {
+                this.listBox_ChosenColumns.Items.Clear();
+                this.listBox_Columns.Items.AddRange(currentTableFieldList);
+            }
         }
 
         private void comboBox_Templates_DropDown(object sender, EventArgs e)
