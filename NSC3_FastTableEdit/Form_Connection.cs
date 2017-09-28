@@ -24,6 +24,7 @@ namespace NSC3_FastTableEdit
 
         private void Form_Connection_Load(object sender, EventArgs e)
         {
+            Class_Connection.GetConnection("LAST_CONNECTION");
             textBox_Server.Text = Class_Connection.connection_Server;
             textBox_Instance.Text = Class_Connection.connection_Instance;
             textBox_Firm.Text = Class_Connection.connection_Company;
@@ -34,6 +35,7 @@ namespace NSC3_FastTableEdit
         {
             SetConnectionParams();
             Class_Connection.ConnectToWebService();
+            Class_Connection.SaveConnection("LAST_CONNECTION");
         }
 
         private void button_Save_Click(object sender, EventArgs e)
