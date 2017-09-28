@@ -44,12 +44,16 @@
             this.ChooseField = new System.Windows.Forms.Button();
             this.RevertField = new System.Windows.Forms.Button();
             this.MoveItemDown = new System.Windows.Forms.Button();
+            this.groupBox_Templates = new System.Windows.Forms.GroupBox();
+            this.comboBox_Templates = new System.Windows.Forms.ComboBox();
+            this.button_Save = new System.Windows.Forms.Button();
+            this.groupBox_Templates.SuspendLayout();
             this.SuspendLayout();
             // 
             // listBox_Columns
             // 
             this.listBox_Columns.FormattingEnabled = true;
-            this.listBox_Columns.Location = new System.Drawing.Point(273, 25);
+            this.listBox_Columns.Location = new System.Drawing.Point(18, 117);
             this.listBox_Columns.Name = "listBox_Columns";
             this.listBox_Columns.Size = new System.Drawing.Size(264, 225);
             this.listBox_Columns.TabIndex = 0;
@@ -57,7 +61,7 @@
             // button_OK
             // 
             this.button_OK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button_OK.Location = new System.Drawing.Point(731, 256);
+            this.button_OK.Location = new System.Drawing.Point(476, 348);
             this.button_OK.Name = "button_OK";
             this.button_OK.Size = new System.Drawing.Size(75, 23);
             this.button_OK.TabIndex = 1;
@@ -68,7 +72,7 @@
             // 
             this.button_Cancel.Cursor = System.Windows.Forms.Cursors.Default;
             this.button_Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button_Cancel.Location = new System.Drawing.Point(812, 256);
+            this.button_Cancel.Location = new System.Drawing.Point(557, 348);
             this.button_Cancel.Name = "button_Cancel";
             this.button_Cancel.Size = new System.Drawing.Size(75, 23);
             this.button_Cancel.TabIndex = 2;
@@ -78,7 +82,7 @@
             // label_Columns
             // 
             this.label_Columns.AutoSize = true;
-            this.label_Columns.Location = new System.Drawing.Point(270, 9);
+            this.label_Columns.Location = new System.Drawing.Point(15, 101);
             this.label_Columns.Name = "label_Columns";
             this.label_Columns.Size = new System.Drawing.Size(127, 13);
             this.label_Columns.TabIndex = 3;
@@ -87,16 +91,16 @@
             // comboBox_Table
             // 
             this.comboBox_Table.FormattingEnabled = true;
-            this.comboBox_Table.Location = new System.Drawing.Point(12, 25);
+            this.comboBox_Table.Location = new System.Drawing.Point(18, 31);
             this.comboBox_Table.Name = "comboBox_Table";
-            this.comboBox_Table.Size = new System.Drawing.Size(255, 21);
+            this.comboBox_Table.Size = new System.Drawing.Size(264, 21);
             this.comboBox_Table.TabIndex = 4;
             this.comboBox_Table.SelectedIndexChanged += new System.EventHandler(this.comboBox_Table_SelectedIndexChanged);
             // 
             // label_Table
             // 
             this.label_Table.AutoSize = true;
-            this.label_Table.Location = new System.Drawing.Point(9, 9);
+            this.label_Table.Location = new System.Drawing.Point(15, 15);
             this.label_Table.Name = "label_Table";
             this.label_Table.Size = new System.Drawing.Size(108, 13);
             this.label_Table.TabIndex = 5;
@@ -105,7 +109,7 @@
             // listBox_ChosenColumns
             // 
             this.listBox_ChosenColumns.FormattingEnabled = true;
-            this.listBox_ChosenColumns.Location = new System.Drawing.Point(624, 25);
+            this.listBox_ChosenColumns.Location = new System.Drawing.Point(369, 117);
             this.listBox_ChosenColumns.Name = "listBox_ChosenColumns";
             this.listBox_ChosenColumns.Size = new System.Drawing.Size(264, 225);
             this.listBox_ChosenColumns.TabIndex = 6;
@@ -113,7 +117,7 @@
             // label_ChosenColumns
             // 
             this.label_ChosenColumns.AutoSize = true;
-            this.label_ChosenColumns.Location = new System.Drawing.Point(621, 9);
+            this.label_ChosenColumns.Location = new System.Drawing.Point(366, 101);
             this.label_ChosenColumns.Name = "label_ChosenColumns";
             this.label_ChosenColumns.Size = new System.Drawing.Size(154, 13);
             this.label_ChosenColumns.TabIndex = 7;
@@ -121,7 +125,7 @@
             // 
             // MoveItemUp
             // 
-            this.MoveItemUp.Location = new System.Drawing.Point(543, 81);
+            this.MoveItemUp.Location = new System.Drawing.Point(288, 173);
             this.MoveItemUp.Name = "MoveItemUp";
             this.MoveItemUp.Size = new System.Drawing.Size(75, 23);
             this.MoveItemUp.TabIndex = 8;
@@ -131,7 +135,7 @@
             // 
             // ChooseField
             // 
-            this.ChooseField.Location = new System.Drawing.Point(543, 110);
+            this.ChooseField.Location = new System.Drawing.Point(288, 202);
             this.ChooseField.Name = "ChooseField";
             this.ChooseField.Size = new System.Drawing.Size(75, 23);
             this.ChooseField.TabIndex = 9;
@@ -141,7 +145,7 @@
             // 
             // RevertField
             // 
-            this.RevertField.Location = new System.Drawing.Point(543, 139);
+            this.RevertField.Location = new System.Drawing.Point(288, 231);
             this.RevertField.Name = "RevertField";
             this.RevertField.Size = new System.Drawing.Size(75, 23);
             this.RevertField.TabIndex = 10;
@@ -151,18 +155,50 @@
             // 
             // MoveItemDown
             // 
-            this.MoveItemDown.Location = new System.Drawing.Point(543, 168);
+            this.MoveItemDown.Location = new System.Drawing.Point(288, 260);
             this.MoveItemDown.Name = "MoveItemDown";
             this.MoveItemDown.Size = new System.Drawing.Size(75, 23);
             this.MoveItemDown.TabIndex = 11;
             this.MoveItemDown.Text = "Move Down";
             this.MoveItemDown.UseVisualStyleBackColor = true;
             // 
+            // groupBox_Templates
+            // 
+            this.groupBox_Templates.Controls.Add(this.comboBox_Templates);
+            this.groupBox_Templates.Controls.Add(this.button_Save);
+            this.groupBox_Templates.Location = new System.Drawing.Point(321, 12);
+            this.groupBox_Templates.Name = "groupBox_Templates";
+            this.groupBox_Templates.Size = new System.Drawing.Size(312, 55);
+            this.groupBox_Templates.TabIndex = 15;
+            this.groupBox_Templates.TabStop = false;
+            this.groupBox_Templates.Text = "Templates";
+            // 
+            // comboBox_Templates
+            // 
+            this.comboBox_Templates.FormattingEnabled = true;
+            this.comboBox_Templates.Location = new System.Drawing.Point(6, 19);
+            this.comboBox_Templates.Name = "comboBox_Templates";
+            this.comboBox_Templates.Size = new System.Drawing.Size(243, 21);
+            this.comboBox_Templates.TabIndex = 13;
+            this.comboBox_Templates.DropDown += new System.EventHandler(this.comboBox_Templates_DropDown);
+            this.comboBox_Templates.SelectedValueChanged += new System.EventHandler(this.comboBox_Templates_SelectedValueChanged);
+            // 
+            // button_Save
+            // 
+            this.button_Save.Location = new System.Drawing.Point(255, 19);
+            this.button_Save.Name = "button_Save";
+            this.button_Save.Size = new System.Drawing.Size(46, 23);
+            this.button_Save.TabIndex = 11;
+            this.button_Save.Text = "Save";
+            this.button_Save.UseVisualStyleBackColor = true;
+            this.button_Save.Click += new System.EventHandler(this.button_Save_Click);
+            // 
             // Form_TableColumnsLoad
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(899, 288);
+            this.ClientSize = new System.Drawing.Size(649, 388);
+            this.Controls.Add(this.groupBox_Templates);
             this.Controls.Add(this.MoveItemDown);
             this.Controls.Add(this.RevertField);
             this.Controls.Add(this.ChooseField);
@@ -178,6 +214,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Form_TableColumnsLoad";
             this.Text = "Insert Headers";
+            this.groupBox_Templates.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -230,6 +267,9 @@
         private System.Windows.Forms.Button RevertField;
         private System.Windows.Forms.Button MoveItemDown;
         private string[] currentTableFieldList;
+        private System.Windows.Forms.GroupBox groupBox_Templates;
+        private System.Windows.Forms.ComboBox comboBox_Templates;
+        private System.Windows.Forms.Button button_Save;
     }
 
     

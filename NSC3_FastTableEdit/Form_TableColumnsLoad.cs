@@ -78,5 +78,33 @@ namespace NSC3_FastTableEdit
             this.listBox_ChosenColumns.Items.Insert(index - 1, temp);
             this.listBox_ChosenColumns.SetSelected(index - 1, true);
         }
+
+        private void comboBox_Templates_DropDown(object sender, EventArgs e)
+        {
+            comboBox_Templates.Items.Clear();
+            comboBox_Templates.Items.AddRange(Class_Table.GetTemplateList().ToArray());
+        }
+
+        private void comboBox_Templates_SelectedValueChanged(object sender, EventArgs e)
+        {
+            Class_Table.GetTemplate(comboBox_Templates.Text);
+            listBox_ChosenColumns.Items.Clear();
+            foreach (var item in Class_Table.tableFieldList)
+            {
+                listBox_ChosenColumns.Items.Add(item);
+            }
+        }
+
+        public void SetTemplateParams()
+        {
+            Class_Table.SetTable(comboBox_Table.Text, listBox_ChosenColumns.Items.Cast<String>().ToList());
+        }
+
+        private void button_Save_Click(object sender, EventArgs e)
+        {
+            SetTemplateParams();
+            if (true)   //  test
+                Class_Table.SaveTemplate(comboBox_Templates.Text);
+        }
     }
 }
