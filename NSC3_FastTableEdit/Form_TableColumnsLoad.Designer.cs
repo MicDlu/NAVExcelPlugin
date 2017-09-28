@@ -47,6 +47,8 @@
             this.groupBox_Templates = new System.Windows.Forms.GroupBox();
             this.comboBox_Templates = new System.Windows.Forms.ComboBox();
             this.button_Save = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.groupBox_Templates.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -194,24 +196,46 @@
             this.button_Save.UseVisualStyleBackColor = true;
             this.button_Save.Click += new System.EventHandler(this.button_Save_Click);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(288, 144);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 16;
+            this.button1.Text = ">>>";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.ChooseAllColumns);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(288, 289);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 17;
+            this.button2.Text = "<<<";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.RevertAllColumns);
+            // 
             // Form_TableColumnsLoad
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(649, 388);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.groupBox_Templates);
             this.Controls.Add(this.MoveItemDown);
             this.Controls.Add(this.RevertField);
             this.Controls.Add(this.ChooseField);
             this.Controls.Add(this.MoveItemUp);
-            this.Controls.Add(this.label_ChosenColumns);
             this.Controls.Add(this.listBox_ChosenColumns);
-            this.Controls.Add(this.label_Table);
             this.Controls.Add(this.comboBox_Table);
-            this.Controls.Add(this.label_Columns);
             this.Controls.Add(this.button_Cancel);
             this.Controls.Add(this.button_OK);
             this.Controls.Add(this.listBox_Columns);
+            this.Controls.Add(this.label_ChosenColumns);
+            this.Controls.Add(this.label_Columns);
+            this.Controls.Add(this.label_Table);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Form_TableColumnsLoad";
             this.Text = "Insert Headers";
@@ -272,6 +296,8 @@
         private System.Windows.Forms.GroupBox groupBox_Templates;
         private System.Windows.Forms.ComboBox comboBox_Templates;
         private System.Windows.Forms.Button button_Save;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
     }
 
     
