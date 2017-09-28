@@ -236,6 +236,7 @@
             this.listBox_Columns.Items.Clear();
             this.currentTableFieldList = uniqueTableFieldList;
             this.listBox_Columns.Items.AddRange(uniqueTableFieldList);
+            this.listBox_ChosenColumns.Items.Clear();
         }
 
         private void initTableComboBox()
