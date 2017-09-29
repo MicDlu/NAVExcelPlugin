@@ -49,7 +49,7 @@ namespace NSC3_FastTableEdit
 
         private void RevertField_Click(object sender, EventArgs e)
         {
-            if (this.listBox_ChosenColumns.SelectedIndex != -1)
+            if (this.listBox_ChosenColumns.SelectedIndex != -1 && !(this.listBox_ChosenColumns.SelectedItem.ToString().StartsWith("* "))) 
             {
                 int index = this.listBox_ChosenColumns.SelectedIndex;
                 this.listBox_ChosenColumns.Items.RemoveAt(this.listBox_ChosenColumns.SelectedIndex);
@@ -72,25 +72,31 @@ namespace NSC3_FastTableEdit
 
         private void MoveItemUp_Click(object sender, EventArgs e)
         {
-            if (this.listBox_ChosenColumns.SelectedIndex != 0 && this.listBox_ChosenColumns.Items.Count > 0)
+            if (this.listBox_ChosenColumns.SelectedIndex != 0 && this.listBox_ChosenColumns.Items.Count > 0 && !(this.listBox_ChosenColumns.SelectedItem.ToString().StartsWith("* ")))
             {
                 string temp = this.listBox_ChosenColumns.SelectedItem.ToString();
                 int index = this.listBox_ChosenColumns.SelectedIndex;
-                this.listBox_ChosenColumns.Items.RemoveAt(index);
-                this.listBox_ChosenColumns.Items.Insert(index - 1, temp);
-                this.listBox_ChosenColumns.SetSelected(index - 1, true);
+                if (!this.listBox_ChosenColumns.Items[this.listBox_ChosenColumns.SelectedIndex - 1].ToString().StartsWith("* "))
+                {
+                    this.listBox_ChosenColumns.Items.RemoveAt(index);
+                    this.listBox_ChosenColumns.Items.Insert(index - 1, temp);
+                    this.listBox_ChosenColumns.SetSelected(index - 1, true);
+                }
             }
         }
 
         private void MoveItemDown_Click(object sender, EventArgs e)
         {
-            if(this.listBox_ChosenColumns.SelectedIndex != this.listBox_ChosenColumns.Items.Count - 1 && this.listBox_ChosenColumns.Items.Count > 0)
+            if(this.listBox_ChosenColumns.SelectedIndex != this.listBox_ChosenColumns.Items.Count - 1 && this.listBox_ChosenColumns.Items.Count > 0 && !(this.listBox_ChosenColumns.SelectedItem.ToString().StartsWith("* ")))
             {
                 string temp = this.listBox_ChosenColumns.SelectedItem.ToString();
                 int index = this.listBox_ChosenColumns.SelectedIndex;
-                this.listBox_ChosenColumns.Items.RemoveAt(index);
-                this.listBox_ChosenColumns.Items.Insert(index + 1, temp);
-                this.listBox_ChosenColumns.SetSelected(index + 1, true);
+                if(!this.listBox_ChosenColumns.Items[this.listBox_ChosenColumns.SelectedIndex + 1].ToString().StartsWith("* "))
+                {
+                    this.listBox_ChosenColumns.Items.RemoveAt(index);
+                    this.listBox_ChosenColumns.Items.Insert(index + 1, temp);
+                    this.listBox_ChosenColumns.SetSelected(index + 1, true);
+                }
             }
         }
 
@@ -100,6 +106,7 @@ namespace NSC3_FastTableEdit
             {
                 this.listBox_ChosenColumns.Items.AddRange(this.listBox_Columns.Items);
                 this.listBox_Columns.Items.Clear();
+                this.listBox_ChosenColumns.SelectedIndex = 0;
             }
         }
 
@@ -108,7 +115,10 @@ namespace NSC3_FastTableEdit
             if(this.currentTableFieldList != null)
             {
                 this.listBox_ChosenColumns.Items.Clear();
+                this.listBox_ChosenColumns.Items.AddRange(currentTablePKeyList);
                 this.listBox_Columns.Items.AddRange(currentTableFieldList);
+                this.listBox_Columns.SelectedIndex = 0;
+                this.listBox_ChosenColumns.SelectedIndex = 0;
             }
         }
 

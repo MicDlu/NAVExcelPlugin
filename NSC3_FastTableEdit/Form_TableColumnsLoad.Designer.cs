@@ -255,11 +255,18 @@
             filterArray.Add(fieldFilter);
             Fields[] tableFieldList = Class_Connection.navFieldsService.ReadMultiple(filterArray.ToArray(), null, 0);
 
-            string[] uniqueTableFieldList = tableFieldList.Select(x => x.FieldName.ToString()).Distinct().ToArray(); //string.Concat(x.FieldName + " \"" + x.Field_Caption + "\"") - dla nazwy i captiona
+            string[] uniqueTableFieldList = tableFieldList.Where(x => x.PrimaryKey == 0).Select(x => x.FieldName.ToString()).Distinct().ToArray(); //string.Concat(x.FieldName + " \"" + x.Field_Caption + "\"") - dla nazwy i captiona
+
+            string[] primaryKeyTableFieldList = tableFieldList.Where(x => x.PrimaryKey > 0).Select(x => string.Concat("* ", x.FieldName)).Distinct().ToArray();
+
             this.listBox_Columns.Items.Clear();
             this.currentTableFieldList = uniqueTableFieldList;
             this.listBox_Columns.Items.AddRange(uniqueTableFieldList);
+            this.listBox_Columns.SelectedIndex = 0;
             this.listBox_ChosenColumns.Items.Clear();
+            this.listBox_ChosenColumns.Items.AddRange(primaryKeyTableFieldList);
+            this.listBox_ChosenColumns.SelectedIndex = 0;
+            currentTablePKeyList = primaryKeyTableFieldList;
         }
 
         private void initTableComboBox()
@@ -271,6 +278,9 @@
             Fields[] tableFieldList = Class_Connection.navFieldsService.ReadMultiple(filterArray.ToArray(), null, 0);
 
             Fields[] allFieldList = Class_Connection.navFieldsService.ReadMultiple(filterArray.ToArray(), null, 0);
+
+            //Fields[] allFieldList = fieldService.ReadMultiple(filterArray.ToArray(), null, 0);
+
             string[] uniqueFieldList = tableFieldList.Select(x => string.Concat(x.TableNo, ' ', x.TableName)).Distinct().ToArray();
             this.comboBox_Table.Items.AddRange(uniqueFieldList);
         }
@@ -290,6 +300,7 @@
         private System.Windows.Forms.Button RevertField;
         private System.Windows.Forms.Button MoveItemDown;
         private string[] currentTableFieldList;
+        private string[] currentTablePKeyList;
         private System.Windows.Forms.GroupBox groupBox_Templates;
         private System.Windows.Forms.ComboBox comboBox_Templates;
         private System.Windows.Forms.Button button_Save;
