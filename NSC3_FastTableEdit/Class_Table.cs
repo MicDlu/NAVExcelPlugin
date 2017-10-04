@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace NSC3_FastTableEdit
 {
@@ -13,14 +14,15 @@ namespace NSC3_FastTableEdit
         static string templatePath = directoryPath + @"Table templates.txt";
         
         static public string tableName;
-        //static public List<Class_Column> tableColumns;
+        static public int tableNumber;
         static public List<String> tableFieldList = new List<string>();
 
 
 
         static public void SetTable(string name, List<String> fieldList)
         {
-            tableName = name;
+            tableNumber = Int32.Parse(name.Substring(0, name.IndexOf(' ')));
+            tableName = name.Substring(name.IndexOf(' ') +1);
             tableFieldList = fieldList;
         }
 
@@ -99,7 +101,40 @@ namespace NSC3_FastTableEdit
 
             return true;
         }
+
+        static public bool SetLastConnection()
+        {
+            bool conExists = false;
+            foreach (Excel.Worksheet worksheet in Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets)
+            {
+                if (worksheet.Name == "Connections")
+                {
+                    conExists = true;
+                    break;
+                }
+            }
+            if (conExists)
+            {
+                Excel.Worksheet worksheet = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets["Connections"];
+                if (((Excel.Range)worksheet.Cells[1, 6]).Value2 == "LAST_CONNECTION")
+                {
+                    Class_Connection.SetConnection(((Excel.Range)worksheet.Cells[1, 7]).Text, (string)((Excel.Range)worksheet.Cells[1, 8]).Text, (string)((Excel.Range)worksheet.Cells[1, 9]).Text, (string)((Excel.Range)worksheet.Cells[1, 10]).Text);
+                    Class_Connection.ConnectToWebService();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
+
+    
 
     public class Class_Column
     {

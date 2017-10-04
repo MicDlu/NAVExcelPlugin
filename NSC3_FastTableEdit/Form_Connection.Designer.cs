@@ -41,6 +41,7 @@
             this.button_Save = new System.Windows.Forms.Button();
             this.comboBox_Templates = new System.Windows.Forms.ComboBox();
             this.groupBox_Templates = new System.Windows.Forms.GroupBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.groupBox_Templates.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -48,7 +49,7 @@
             // 
             this.textBox_Server.Location = new System.Drawing.Point(12, 99);
             this.textBox_Server.Name = "textBox_Server";
-            this.textBox_Server.Size = new System.Drawing.Size(305, 20);
+            this.textBox_Server.Size = new System.Drawing.Size(346, 20);
             this.textBox_Server.TabIndex = 0;
             // 
             // label_Server
@@ -73,7 +74,7 @@
             // 
             this.textBox_Firm.Location = new System.Drawing.Point(12, 177);
             this.textBox_Firm.Name = "textBox_Firm";
-            this.textBox_Firm.Size = new System.Drawing.Size(305, 20);
+            this.textBox_Firm.Size = new System.Drawing.Size(346, 20);
             this.textBox_Firm.TabIndex = 3;
             // 
             // label_Port
@@ -89,7 +90,7 @@
             // 
             this.textBox_Port.Location = new System.Drawing.Point(12, 216);
             this.textBox_Port.Name = "textBox_Port";
-            this.textBox_Port.Size = new System.Drawing.Size(305, 20);
+            this.textBox_Port.Size = new System.Drawing.Size(345, 20);
             this.textBox_Port.TabIndex = 7;
             // 
             // label_Instance
@@ -105,13 +106,13 @@
             // 
             this.textBox_Instance.Location = new System.Drawing.Point(12, 138);
             this.textBox_Instance.Name = "textBox_Instance";
-            this.textBox_Instance.Size = new System.Drawing.Size(305, 20);
+            this.textBox_Instance.Size = new System.Drawing.Size(345, 20);
             this.textBox_Instance.TabIndex = 5;
             // 
             // button_OK
             // 
             this.button_OK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button_OK.Location = new System.Drawing.Point(161, 272);
+            this.button_OK.Location = new System.Drawing.Point(202, 242);
             this.button_OK.Name = "button_OK";
             this.button_OK.Size = new System.Drawing.Size(75, 23);
             this.button_OK.TabIndex = 9;
@@ -122,7 +123,7 @@
             // button_Cancel
             // 
             this.button_Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button_Cancel.Location = new System.Drawing.Point(242, 272);
+            this.button_Cancel.Location = new System.Drawing.Point(283, 242);
             this.button_Cancel.Name = "button_Cancel";
             this.button_Cancel.Size = new System.Drawing.Size(75, 23);
             this.button_Cancel.TabIndex = 10;
@@ -131,9 +132,9 @@
             // 
             // button_Save
             // 
-            this.button_Save.Location = new System.Drawing.Point(253, 19);
+            this.button_Save.Location = new System.Drawing.Point(276, 19);
             this.button_Save.Name = "button_Save";
-            this.button_Save.Size = new System.Drawing.Size(46, 23);
+            this.button_Save.Size = new System.Drawing.Size(69, 23);
             this.button_Save.TabIndex = 11;
             this.button_Save.Text = "Save";
             this.button_Save.UseVisualStyleBackColor = true;
@@ -144,27 +145,38 @@
             this.comboBox_Templates.FormattingEnabled = true;
             this.comboBox_Templates.Location = new System.Drawing.Point(6, 19);
             this.comboBox_Templates.Name = "comboBox_Templates";
-            this.comboBox_Templates.Size = new System.Drawing.Size(241, 21);
+            this.comboBox_Templates.Size = new System.Drawing.Size(189, 21);
             this.comboBox_Templates.TabIndex = 13;
             this.comboBox_Templates.DropDown += new System.EventHandler(this.comboBox_Templates_DropDown);
             this.comboBox_Templates.SelectedValueChanged += new System.EventHandler(this.comboBox_Templates_SelectedValueChanged);
             // 
             // groupBox_Templates
             // 
+            this.groupBox_Templates.Controls.Add(this.button1);
             this.groupBox_Templates.Controls.Add(this.comboBox_Templates);
             this.groupBox_Templates.Controls.Add(this.button_Save);
             this.groupBox_Templates.Location = new System.Drawing.Point(12, 12);
             this.groupBox_Templates.Name = "groupBox_Templates";
-            this.groupBox_Templates.Size = new System.Drawing.Size(305, 55);
+            this.groupBox_Templates.Size = new System.Drawing.Size(353, 55);
             this.groupBox_Templates.TabIndex = 14;
             this.groupBox_Templates.TabStop = false;
             this.groupBox_Templates.Text = "Templates";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(201, 19);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(69, 23);
+            this.button1.TabIndex = 14;
+            this.button1.Text = "Save to file";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button_SaveToFile_Click);
             // 
             // Form_Connection
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(325, 304);
+            this.ClientSize = new System.Drawing.Size(368, 274);
             this.Controls.Add(this.groupBox_Templates);
             this.Controls.Add(this.button_Cancel);
             this.Controls.Add(this.button_OK);
@@ -176,6 +188,7 @@
             this.Controls.Add(this.label_Firm);
             this.Controls.Add(this.label_Instance);
             this.Controls.Add(this.label_Port);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Form_Connection";
             this.Text = "Form_Connection";
             this.Load += new System.EventHandler(this.Form_Connection_Load);
@@ -200,5 +213,6 @@
         private System.Windows.Forms.Button button_Save;
         private System.Windows.Forms.ComboBox comboBox_Templates;
         private System.Windows.Forms.GroupBox groupBox_Templates;
+        private System.Windows.Forms.Button button1;
     }
 }

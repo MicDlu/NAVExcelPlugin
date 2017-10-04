@@ -20,7 +20,7 @@ namespace NSC3_FastTableEdit
 
         public List<string> Columns()
         {
-            return listBox_Columns.Items.Cast<string>().ToList();
+            return listBox_ChosenColumns.Items.Cast<string>().ToList();
         }
 
         private void comboBox_Table_SelectedIndexChanged(object sender, EventArgs e)
@@ -30,95 +30,96 @@ namespace NSC3_FastTableEdit
 
         private void ChooseField_Click(object sender, EventArgs e)
         {
-            if (this.listBox_Columns.SelectedIndex != -1)
+            if (listBox_Columns.SelectedIndex != -1)
             {
-                int index = this.listBox_Columns.SelectedIndex;
-                this.listBox_ChosenColumns.Items.Add(this.listBox_Columns.SelectedItem);
-                this.listBox_Columns.Items.RemoveAt(this.listBox_Columns.SelectedIndex);
-                if (this.listBox_Columns.Items.Count > index + 1)
+                int index = listBox_Columns.SelectedIndex;
+                listBox_ChosenColumns.Items.Add(listBox_Columns.SelectedItem);
+                listBox_Columns.Items.RemoveAt(listBox_Columns.SelectedIndex);
+                if (listBox_Columns.Items.Count > index + 1)
                 {
-                    this.listBox_Columns.SetSelected(index, true);
+                    listBox_Columns.SetSelected(index, true);
                 }
                 else
                 {
-                    if (this.listBox_Columns.Items.Count > 0)
-                        this.listBox_Columns.SetSelected(this.listBox_Columns.Items.Count - 1, true);
+                    if (listBox_Columns.Items.Count > 0)
+                        listBox_Columns.SetSelected(listBox_Columns.Items.Count - 1, true);
                 }
             }
         }
 
         private void RevertField_Click(object sender, EventArgs e)
         {
-            if (this.listBox_ChosenColumns.SelectedIndex != -1 && !(this.listBox_ChosenColumns.SelectedItem.ToString().StartsWith("* "))) 
+            if (listBox_ChosenColumns.SelectedIndex != -1 && !(listBox_ChosenColumns.SelectedItem.ToString().StartsWith("* "))) 
             {
-                int index = this.listBox_ChosenColumns.SelectedIndex;
-                this.listBox_ChosenColumns.Items.RemoveAt(this.listBox_ChosenColumns.SelectedIndex);
-                string[] comparer = new string[this.listBox_ChosenColumns.Items.Count];
-                this.listBox_ChosenColumns.Items.CopyTo(comparer, 0);
-                this.listBox_Columns.Items.Clear();
-                this.listBox_Columns.Items.AddRange(currentTableFieldList.Except(comparer).ToArray());
+                int index = listBox_ChosenColumns.SelectedIndex;
+                listBox_ChosenColumns.Items.RemoveAt(listBox_ChosenColumns.SelectedIndex);
+                string[] comparer = new string[listBox_ChosenColumns.Items.Count];
+                listBox_ChosenColumns.Items.CopyTo(comparer, 0);
+                listBox_Columns.Items.Clear();
+                listBox_Columns.Items.AddRange(currentTableFieldList.Except(comparer).ToArray());
 
-                if (this.listBox_ChosenColumns.Items.Count > index + 1)
+                if (listBox_ChosenColumns.Items.Count > index + 1)
                 {
-                    this.listBox_ChosenColumns.SetSelected(index, true);
+                    listBox_ChosenColumns.SetSelected(index, true);
                 }
                 else
                 {
-                    if (this.listBox_ChosenColumns.Items.Count > 0)
-                        this.listBox_ChosenColumns.SetSelected(this.listBox_ChosenColumns.Items.Count - 1, true);
+                    if (listBox_ChosenColumns.Items.Count > 0)
+                        listBox_ChosenColumns.SetSelected(listBox_ChosenColumns.Items.Count - 1, true);
                 }
             }
         }
 
         private void MoveItemUp_Click(object sender, EventArgs e)
         {
-            if (this.listBox_ChosenColumns.SelectedIndex != 0 && this.listBox_ChosenColumns.Items.Count > 0 && !(this.listBox_ChosenColumns.SelectedItem.ToString().StartsWith("* ")))
+            if (listBox_ChosenColumns.SelectedIndex != 0 && listBox_ChosenColumns.Items.Count > 0 && !(listBox_ChosenColumns.SelectedItem.ToString().StartsWith("* ")))
             {
-                string temp = this.listBox_ChosenColumns.SelectedItem.ToString();
-                int index = this.listBox_ChosenColumns.SelectedIndex;
-                if (!this.listBox_ChosenColumns.Items[this.listBox_ChosenColumns.SelectedIndex - 1].ToString().StartsWith("* "))
+                string temp = listBox_ChosenColumns.SelectedItem.ToString();
+                int index = listBox_ChosenColumns.SelectedIndex;
+                if (!listBox_ChosenColumns.Items[listBox_ChosenColumns.SelectedIndex - 1].ToString().StartsWith("* "))
                 {
-                    this.listBox_ChosenColumns.Items.RemoveAt(index);
-                    this.listBox_ChosenColumns.Items.Insert(index - 1, temp);
-                    this.listBox_ChosenColumns.SetSelected(index - 1, true);
+                    listBox_ChosenColumns.Items.RemoveAt(index);
+                    listBox_ChosenColumns.Items.Insert(index - 1, temp);
+                    listBox_ChosenColumns.SetSelected(index - 1, true);
                 }
             }
         }
 
         private void MoveItemDown_Click(object sender, EventArgs e)
         {
-            if(this.listBox_ChosenColumns.SelectedIndex != this.listBox_ChosenColumns.Items.Count - 1 && this.listBox_ChosenColumns.Items.Count > 0 && !(this.listBox_ChosenColumns.SelectedItem.ToString().StartsWith("* ")))
+            if(listBox_ChosenColumns.SelectedIndex != listBox_ChosenColumns.Items.Count - 1 && listBox_ChosenColumns.Items.Count > 0 && !(listBox_ChosenColumns.SelectedItem.ToString().StartsWith("* ")))
             {
-                string temp = this.listBox_ChosenColumns.SelectedItem.ToString();
-                int index = this.listBox_ChosenColumns.SelectedIndex;
-                if(!this.listBox_ChosenColumns.Items[this.listBox_ChosenColumns.SelectedIndex + 1].ToString().StartsWith("* "))
+                string temp = listBox_ChosenColumns.SelectedItem.ToString();
+                int index = listBox_ChosenColumns.SelectedIndex;
+                if(!listBox_ChosenColumns.Items[listBox_ChosenColumns.SelectedIndex + 1].ToString().StartsWith("* "))
                 {
-                    this.listBox_ChosenColumns.Items.RemoveAt(index);
-                    this.listBox_ChosenColumns.Items.Insert(index + 1, temp);
-                    this.listBox_ChosenColumns.SetSelected(index + 1, true);
+                    listBox_ChosenColumns.Items.RemoveAt(index);
+                    listBox_ChosenColumns.Items.Insert(index + 1, temp);
+                    listBox_ChosenColumns.SetSelected(index + 1, true);
                 }
             }
         }
 
         private void ChooseAllColumns(object sender, EventArgs e)
         {
-            if(this.listBox_Columns.Items.Count > 0)
+            if(listBox_Columns.Items.Count > 0)
             {
-                this.listBox_ChosenColumns.Items.AddRange(this.listBox_Columns.Items);
-                this.listBox_Columns.Items.Clear();
-                this.listBox_ChosenColumns.SelectedIndex = 0;
+                listBox_ChosenColumns.Items.AddRange(listBox_Columns.Items);
+                listBox_Columns.Items.Clear();
+                listBox_ChosenColumns.SelectedIndex = 0;
             }
         }
 
         private void RevertAllColumns(object sender, EventArgs e)
         {
-            if(this.currentTableFieldList != null)
+            if(currentTableFieldList != null)
             {
-                this.listBox_ChosenColumns.Items.Clear();
-                this.listBox_ChosenColumns.Items.AddRange(currentTablePKeyList);
-                this.listBox_Columns.Items.AddRange(currentTableFieldList);
-                this.listBox_Columns.SelectedIndex = 0;
-                this.listBox_ChosenColumns.SelectedIndex = 0;
+                listBox_ChosenColumns.Items.Clear();
+                listBox_ChosenColumns.Items.AddRange(currentTablePKeyList);
+                listBox_Columns.Items.Clear();
+                listBox_Columns.Items.AddRange(currentTableFieldList);
+                listBox_Columns.SelectedIndex = 0;
+                listBox_ChosenColumns.SelectedIndex = 0;
             }
         }
 
@@ -146,8 +147,12 @@ namespace NSC3_FastTableEdit
         private void button_Save_Click(object sender, EventArgs e)
         {
             SetTemplateParams();
-            if (true)   //  test
-                Class_Table.SaveTemplate(comboBox_Templates.Text);
+               // Class_Table.SaveTemplate(comboBox_Templates.Text);
+        }
+
+        private void button_OK_Click(object sender, EventArgs e)
+        {
+            SetTemplateParams();
         }
     }
 }

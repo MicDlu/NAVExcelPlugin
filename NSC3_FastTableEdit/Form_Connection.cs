@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 
@@ -6,8 +7,6 @@ namespace NSC3_FastTableEdit
 {
     public partial class Form_Connection : Form
     {
-        Excel.Workbook activeWorkbook = Globals.ThisAddIn.Application.ActiveWorkbook;
-
         public Form_Connection()
         {
             InitializeComponent();
@@ -20,83 +19,68 @@ namespace NSC3_FastTableEdit
 
         private void Form_Connection_Load(object sender, EventArgs e)
         {
-            Class_Connection.GetConnection("LAST_CONNECTION");
-            textBox_Server.Text = Class_Connection.connection_Server;
-            textBox_Instance.Text = Class_Connection.connection_Instance;
-            textBox_Firm.Text = Class_Connection.connection_Company;
-            textBox_Port.Text = Class_Connection.connection_Port;
+            if (Class_Connection.GetLastConnection())
+            {
+                textBox_Server.Text = Class_Connection.connection_Server;
+                textBox_Instance.Text = Class_Connection.connection_Instance;
+                textBox_Firm.Text = Class_Connection.connection_Company;
+                textBox_Port.Text = Class_Connection.connection_Port;
+            }
         }
 
         private void button_OK_Click(object sender, EventArgs e)
         {
             SetConnectionParams();
             Class_Connection.ConnectToWebService();
-            Class_Connection.SaveConnection("LAST_CONNECTION");
+            Class_Connection.SaveLastConnection();
         }
 
         private void button_Save_Click(object sender, EventArgs e)
         {
             SetConnectionParams();
-            //if (true)   //  test
-            //    Class_Connection.SaveConnection(comboBox_Templates.Text);
-            bool conExists = false;
-            foreach(Excel.Worksheet worksheet in Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets)
+            Class_Connection.SaveConnection(comboBox_Templates.Text);
+        }
+
+        private void button_SaveToFile_Click(object sender, EventArgs e)
+        {
+            string appDataSettingsPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\NAVExcelInferfaceFiles";
+            string separator = @"@#$%";
+            DirectoryInfo directoryInfo = Directory.CreateDirectory(appDataSettingsPath);
+
+            if (Class_Connection.ConnectionsExist())
             {
-                if(worksheet.Name == "Connections")
+                Excel.Worksheet worksheet = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets["Connections"];
+                int currentRow = 2;
+
+                if(File.Exists(appDataSettingsPath + @"\Config.txt"))
+                    File.Delete(appDataSettingsPath + @"\Config.txt");
+
+                if (((Excel.Range)worksheet.Cells[1, 6]).Value2 != null)
                 {
-                    conExists = true;
-                    break;
+
+                    File.AppendAllText(appDataSettingsPath + @"\Config.txt", 
+                        ((Excel.Range)worksheet.Cells[1, 6]).Text + separator + 
+                        ((Excel.Range)worksheet.Cells[1, 7]).Text + separator + 
+                        ((Excel.Range)worksheet.Cells[1, 8]).Text + separator + 
+                        ((Excel.Range)worksheet.Cells[1, 9]).Text + separator + 
+                        ((Excel.Range)worksheet.Cells[1, 10]).Text + Environment.NewLine);
                 }
-            }
-            if(!conExists)
-            {
-                Excel.Worksheet actWorksheet = Globals.ThisAddIn.Application.ActiveSheet;
-                Excel.Worksheet worksheet = activeWorkbook.Worksheets.Add(Type.Missing, activeWorkbook.Worksheets[activeWorkbook.Worksheets.Count]);
-                worksheet.Name = "Connections";
 
-                ((Excel.Range)worksheet.Cells[1, 1]).Value2 = "Name";
-                ((Excel.Range)worksheet.Cells[1, 2]).Value2 = "Server";
-                ((Excel.Range)worksheet.Cells[1, 3]).Value2 = "Instance";
-                ((Excel.Range)worksheet.Cells[1, 4]).Value2 = "Company";
-                ((Excel.Range)worksheet.Cells[1, 5]).Value2 = "Port";
-                ((Excel.Range)worksheet.Range[worksheet.Cells[1,1],worksheet.Cells[1,5]]).Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Red);
-
-                ((Excel.Range)worksheet.Cells[2, 1]).Value2 = comboBox_Templates.Text;
-                ((Excel.Range)worksheet.Cells[2, 2]).Value2 = Class_Connection.connection_Server;
-                ((Excel.Range)worksheet.Cells[2, 3]).Value2 = Class_Connection.connection_Instance;
-                ((Excel.Range)worksheet.Cells[2, 4]).Value2 = Class_Connection.connection_Company;
-                ((Excel.Range)worksheet.Cells[2, 5]).Value2 = Class_Connection.connection_Port;
-                ((Excel.Range)worksheet.Range[worksheet.Cells[2,1],worksheet.Cells[2,5]]).Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Blue);
-
-                actWorksheet.Activate();
+                while (((Excel.Range)worksheet.Cells[currentRow, 1]).Value2 != null)
+                {
+                    File.AppendAllText(appDataSettingsPath + @"\Config.txt", 
+                        ((Excel.Range)worksheet.Cells[currentRow, 1]).Text + separator + 
+                        ((Excel.Range)worksheet.Cells[currentRow, 2]).Text + separator + 
+                        ((Excel.Range)worksheet.Cells[currentRow, 3]).Text + separator + 
+                        ((Excel.Range)worksheet.Cells[currentRow, 4]).Text + separator + 
+                        ((Excel.Range)worksheet.Cells[currentRow, 5]).Text + Environment.NewLine);
+                    currentRow++;
+                }
+                MessageBox.Show("Connections saved successfully", "File saved", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
-                //Excel.Worksheet worksheet = (Excel.Worksheet)Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets["Connections"];
-
-                Excel.Worksheet worksheet = activeWorkbook.Worksheets["Connections"];
-                
-                int currentRow = 1, newRow = 0;
-                while(((Excel.Range)worksheet.Cells[currentRow, 1]).Value2 != null)
-                {
-                    if(((Excel.Range)worksheet.Cells[currentRow, 1]).Value2 == comboBox_Templates.Text)
-                    {
-                        newRow = currentRow;
-                        break;
-                    }
-                    currentRow++;
-                    newRow = currentRow;
-                }
-
-                ((Excel.Range)worksheet.Cells[newRow, 1]).Value2 = comboBox_Templates.Text;
-                ((Excel.Range)worksheet.Cells[newRow, 2]).Value2 = Class_Connection.connection_Server;
-                ((Excel.Range)worksheet.Cells[newRow, 3]).Value2 = Class_Connection.connection_Instance;
-                ((Excel.Range)worksheet.Cells[newRow, 4]).Value2 = Class_Connection.connection_Company;
-                ((Excel.Range)worksheet.Cells[newRow, 5]).Value2 = Class_Connection.connection_Port;
-                ((Excel.Range)worksheet.Range[worksheet.Cells[newRow, 1], worksheet.Cells[newRow, 5]]).Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Blue);
-
-                // = (Excel.Worksheet)Globals.ThisAddIn.Application.ActiveWorkbook.;
-
+                MessageBox.Show("No connections have been saved yet", "No connection", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
         }
@@ -109,7 +93,7 @@ namespace NSC3_FastTableEdit
 
         private void comboBox_Templates_SelectedValueChanged(object sender, EventArgs e)
         {
-            Class_Connection.GetConnection(comboBox_Templates.Text);
+            Class_Connection.GetConnection(comboBox_Templates.SelectedIndex);
             textBox_Server.Text = Class_Connection.connection_Server;
             textBox_Instance.Text = Class_Connection.connection_Instance;
             textBox_Firm.Text = Class_Connection.connection_Company;

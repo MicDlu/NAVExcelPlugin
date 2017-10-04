@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace NSC3_FastTableEdit
 {
     static class Class_Connection
     {
+        //static public Excel.Workbook activeWorkbook = Globals.ThisAddIn.Application.ActiveWorkbook;
+
         static string directoryPath = System.IO.Path.GetTempPath() + @"NAVTableEdit\";
         static string connectionPath = directoryPath + @"Connections.txt";
 
@@ -26,63 +26,170 @@ namespace NSC3_FastTableEdit
             connection_Port = port;
         }
 
-        static public bool SaveConnection(string ConnectionName)
+        static public bool ConnectionsExist()
         {
-            if (!System.IO.Directory.Exists(directoryPath))
-                System.IO.Directory.CreateDirectory(directoryPath);
-            if (!System.IO.File.Exists(connectionPath))
-                System.IO.File.Create(connectionPath).Close();
-
-            string[] ConnectionContent = new string[] { "#" + ConnectionName,
-                "Server\t#" + connection_Server,
-                "Instance\t#" + connection_Instance,
-                "Firm\t\t#" + connection_Company,
-                "Port\t\t#" + connection_Port, "" };
-            string[] fileContent = System.IO.File.ReadAllLines(connectionPath);
-
-            if (fileContent.Contains(ConnectionContent[0]))
+            foreach (Excel.Worksheet worksheet in Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets)
             {
-                int index = Array.IndexOf(fileContent, ConnectionContent[0]);
-                fileContent[index + 1] = "Server\t#" + connection_Server;
-                fileContent[index + 2] = "Instance\t#" + connection_Instance;
-                fileContent[index + 3] = "Firm\t\t#" + connection_Company;
-                fileContent[index + 4] = "Port\t\t#" + connection_Port;
-                System.IO.File.WriteAllLines(connectionPath, fileContent);
+                if (worksheet.Name == "Connections")
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        static public void SaveLastConnection()
+        {
+            if (!ConnectionsExist())
+            {
+                Excel.Worksheet actWorksheet = Globals.ThisAddIn.Application.ActiveSheet;
+                Excel.Worksheet worksheet = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Add(Type.Missing, Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets[Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Count]);
+                worksheet.Name = "Connections";
+
+                ((Excel.Range)worksheet.Cells[1, 6]).Value2 = "LAST_CONNECTION";
+                ((Excel.Range)worksheet.Cells[1, 7]).Value2 = connection_Server;
+                ((Excel.Range)worksheet.Cells[1, 8]).Value2 = connection_Instance;
+                ((Excel.Range)worksheet.Cells[1, 9]).Value2 = connection_Company;
+                ((Excel.Range)worksheet.Cells[1, 10]).Value2 = connection_Port;
+                ((Excel.Range)worksheet.Range[worksheet.Cells[1, 6], worksheet.Cells[1, 10]]).Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Firebrick);
+
+                actWorksheet.Activate();
             }
             else
             {
-                System.IO.File.AppendAllLines(connectionPath, ConnectionContent);
+                Excel.Worksheet worksheet = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets["Connections"];
+
+                ((Excel.Range)worksheet.Cells[1, 6]).Value2 = "LAST_CONNECTION";
+                ((Excel.Range)worksheet.Cells[1, 7]).Value2 = connection_Server;
+                ((Excel.Range)worksheet.Cells[1, 8]).Value2 = connection_Instance;
+                ((Excel.Range)worksheet.Cells[1, 9]).Value2 = connection_Company;
+                ((Excel.Range)worksheet.Cells[1, 10]).Value2 = connection_Port;
+                ((Excel.Range)worksheet.Range[worksheet.Cells[1, 6], worksheet.Cells[1, 10]]).Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Firebrick);
             }
-            return true;
+        }
+
+        static public void SaveConnection(string ConnectionName)
+        {
+            Globals.ThisAddIn.Application.ActiveWorkbook.Save();
+            if (!ConnectionsExist())
+            {
+                Excel.Worksheet actWorksheet = Globals.ThisAddIn.Application.ActiveSheet;
+                Excel.Worksheet worksheet = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Add(Type.Missing, Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets[Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Count]);
+                worksheet.Name = "Connections";
+
+                ((Excel.Range)worksheet.Cells[1, 1]).Value2 = "Name";
+                ((Excel.Range)worksheet.Cells[1, 2]).Value2 = "Server";
+                ((Excel.Range)worksheet.Cells[1, 3]).Value2 = "Instance";
+                ((Excel.Range)worksheet.Cells[1, 4]).Value2 = "Company";
+                ((Excel.Range)worksheet.Cells[1, 5]).Value2 = "Port";
+                ((Excel.Range)worksheet.Range[worksheet.Cells[1, 1], worksheet.Cells[1, 5]]).Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Red);
+
+                ((Excel.Range)worksheet.Cells[2, 1]).Value2 = ConnectionName;
+                ((Excel.Range)worksheet.Cells[2, 2]).Value2 = connection_Server;
+                ((Excel.Range)worksheet.Cells[2, 3]).Value2 = connection_Instance;
+                ((Excel.Range)worksheet.Cells[2, 4]).Value2 = connection_Company;
+                ((Excel.Range)worksheet.Cells[2, 5]).Value2 = connection_Port;
+                ((Excel.Range)worksheet.Range[worksheet.Cells[2, 1], worksheet.Cells[2, 5]]).Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Blue);
+
+                actWorksheet.Activate();
+            }
+            else
+            {
+                Excel.Worksheet worksheet = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets["Connections"];
+                if (((Excel.Range)worksheet.Cells[1, 1]).Text == "Name")
+                {
+                    int currentRow = 1, newRow = 0;
+                    while (((Excel.Range)worksheet.Cells[currentRow, 1]).Value2 != null)
+                    {
+                        if (((Excel.Range)worksheet.Cells[currentRow, 1]).Value2 == ConnectionName)
+                        {
+                            newRow = currentRow;
+                            break;
+                        }
+                        currentRow++;
+                        newRow = currentRow;
+                    }
+
+                    ((Excel.Range)worksheet.Cells[newRow, 1]).Value2 = ConnectionName;
+                    ((Excel.Range)worksheet.Cells[newRow, 2]).Value2 = connection_Server;
+                    ((Excel.Range)worksheet.Cells[newRow, 3]).Value2 = connection_Instance;
+                    ((Excel.Range)worksheet.Cells[newRow, 4]).Value2 = connection_Company;
+                    ((Excel.Range)worksheet.Cells[newRow, 5]).Value2 = connection_Port;
+                    ((Excel.Range)worksheet.Range[worksheet.Cells[newRow, 1], worksheet.Cells[newRow, 5]]).Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Blue);
+                }
+                else
+                {
+                    ((Excel.Range)worksheet.Cells[1, 1]).Value2 = "Name";
+                    ((Excel.Range)worksheet.Cells[1, 2]).Value2 = "Server";
+                    ((Excel.Range)worksheet.Cells[1, 3]).Value2 = "Instance";
+                    ((Excel.Range)worksheet.Cells[1, 4]).Value2 = "Company";
+                    ((Excel.Range)worksheet.Cells[1, 5]).Value2 = "Port";
+                    ((Excel.Range)worksheet.Range[worksheet.Cells[1, 1], worksheet.Cells[1, 5]]).Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Red);
+
+                    ((Excel.Range)worksheet.Cells[2, 1]).Value2 = ConnectionName;
+                    ((Excel.Range)worksheet.Cells[2, 2]).Value2 = Class_Connection.connection_Server;
+                    ((Excel.Range)worksheet.Cells[2, 3]).Value2 = Class_Connection.connection_Instance;
+                    ((Excel.Range)worksheet.Cells[2, 4]).Value2 = Class_Connection.connection_Company;
+                    ((Excel.Range)worksheet.Cells[2, 5]).Value2 = Class_Connection.connection_Port;
+                    ((Excel.Range)worksheet.Range[worksheet.Cells[2, 1], worksheet.Cells[2, 5]]).Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Blue);
+                }
+               
+            }
         }
 
         static public List<string> GetTemplateList()
         {
             List<string> templateLists = new List<string>();
-            if (!System.IO.File.Exists(connectionPath))
-                return templateLists;
-
-            string[] fileContent = System.IO.File.ReadAllLines(connectionPath);
-            for (int i = 0; i < fileContent.Count(); i+=6)
+            if (ConnectionsExist())
             {
-                templateLists.Add(fileContent[i].Substring(1));
+                Excel.Worksheet worksheet = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets["Connections"];
+                int currentRow = 1;
+                while (((Excel.Range)worksheet.Cells[currentRow, 1]).Value2 != null)
+                {
+                    if (((Excel.Range)worksheet.Cells[currentRow, 1]).Value2 != "Name")
+                    {
+                        templateLists.Add(((Excel.Range)worksheet.Cells[currentRow, 1]).Text);
+                    }
+                    currentRow++;
+                }
             }
             return templateLists;
         }
 
-        static public bool GetConnection(string ConnectionName)
+        static public void GetConnection(int selectedIndex)
         {
-            if (!System.IO.File.Exists(connectionPath))
-                return false;
-
-            string[] fileContent = System.IO.File.ReadAllLines(connectionPath);
-            int index = Array.IndexOf(fileContent, "#" + ConnectionName);
-            connection_Server = fileContent[index + 1].Substring(fileContent[index + 1].IndexOf('#') + 1);
-            connection_Instance = fileContent[index + 2].Substring(fileContent[index + 2].IndexOf('#') + 1);
-            connection_Company = fileContent[index + 3].Substring(fileContent[index + 3].IndexOf('#') + 1);
-            connection_Port = fileContent[index + 4].Substring(fileContent[index + 4].IndexOf('#') + 1);
-            return true;
+            Excel.Worksheet worksheet = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets["Connections"];
+            connection_Server = ((Excel.Range)worksheet.Cells[selectedIndex+2, 2]).Text;
+            connection_Instance = ((Excel.Range)worksheet.Cells[selectedIndex+2, 3]).Text;
+            connection_Company = ((Excel.Range)worksheet.Cells[selectedIndex+2, 4]).Text;
+            connection_Port = ((Excel.Range)worksheet.Cells[selectedIndex+2, 5]).Text;
         }
+
+        static public bool GetLastConnection()
+        {
+            if (ConnectionsExist())
+            {
+                Excel.Worksheet worksheet = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets["Connections"];
+                if (((Excel.Range)worksheet.Cells[1, 6]).Value2 == "LAST_CONNECTION")
+                {
+                    connection_Server = ((Excel.Range)worksheet.Cells[1, 7]).Text;
+                    connection_Instance = ((Excel.Range)worksheet.Cells[1, 8]).Text;
+                    connection_Company = ((Excel.Range)worksheet.Cells[1, 9]).Text;
+                    connection_Port = ((Excel.Range)worksheet.Cells[1, 10]).Text;
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        //static public void 
 
         static public void ConnectToWebService(string objectType = "Page", string objectName = "Fields")
         {
