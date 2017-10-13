@@ -26,10 +26,39 @@ namespace NSC3_FastTableEdit.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://srv-nav:7038/NAV2016PL/WS/CRONUS%20Polska%20Sp.%20z%20o.o./Page/Fields")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://srv-nav:7058/NAV2016PL/WS/CRONUS%20Polska%20Sp.%20z%20o.o./Codeunit/Fields" +
+            "CUExtension")]
         public string NSC3_FastTableEdit_Fields_Fields_Service {
             get {
                 return ((string)(this["NSC3_FastTableEdit_Fields_Fields_Service"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://srv-nav:7058/NAV2016PL/WS/CRONUS%20Polska%20Sp.%20z%20o.o./Page/Fields")]
+        public string NSC3_FastTableEdit_NAVFieldsService_Fields_Service {
+            get {
+                return ((string)(this["NSC3_FastTableEdit_NAVFieldsService_Fields_Service"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://srv-nav:7058/NAV2016PL/WS/CRONUS%20Polska%20Sp.%20z%20o.o./Codeunit/Fields" +
+            "")]
+        public string NSC3_FastTableEdit_NAVFieldsService_Fields {
+            get {
+                return ((string)(this["NSC3_FastTableEdit_NAVFieldsService_Fields"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://srv-nav:7058/NAV2016PL/WS/CRONUS%20Polska%20Sp.%20z%20o.o./SystemService")]
+        public string NSC3_FastTableEdit_NAVFieldsService_SystemService {
+            get {
+                return ((string)(this["NSC3_FastTableEdit_NAVFieldsService_SystemService"]));
             }
         }
     }

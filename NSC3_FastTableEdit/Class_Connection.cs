@@ -16,7 +16,9 @@ namespace NSC3_FastTableEdit
         static public string connection_Instance;
         static public string connection_Company;
         static public string connection_Port;
-        static public NAVFieldsService.Fields_Service navFieldsService = new NAVFieldsService.Fields_Service();
+        static public NAVFieldsService.Fields_Binding navFieldsService = new NAVFieldsService.Fields_Binding();
+        static public NAVFieldsService.FieldsCUExtension_Binding navCodeunitService = new NAVFieldsService.FieldsCUExtension_Binding();
+        
 
         static public void SetConnection(string server, string instance, string firm, string port)
         {
@@ -191,16 +193,15 @@ namespace NSC3_FastTableEdit
 
         //static public void 
 
-        static public void ConnectToWebService(string objectType = "Page", string objectName = "Fields")
+        static public void ConnectToWebService()
         {
-            //TimeRegisterMgt_Binding TimeRegisterMgt = new TimeRegisterMgt_Binding();
-            //string companyname = System.Uri.EscapeDataString(GetVariable("CompanyName").Trim());
-            //TimeRegisterMgt.Url = "http://" + GetVariable("Server") + ":" + GetVariable("WebServicePort") + "/" + GetVariable("ServerInstance") + " / WS / " + companyname + " / Codeunit / TimeRegisterMgt";
-            //TimeRegisterMgt.UseDefaultCredentials = true; 
-
             string companyname = System.Uri.EscapeDataString(connection_Company.Trim());
-            navFieldsService.Url = @"http://" + connection_Server + @":" + connection_Port + @"/" + connection_Instance + @"/WS/" + companyname + @"/" + objectType + @"/" + objectName;
+
+            navFieldsService.Url = @"http://" + connection_Server + @":" + connection_Port + @"/" + connection_Instance + @"/WS/" + companyname + @"/" + "Page" + @"/" + "Fields";
             Class_Connection.navFieldsService.UseDefaultCredentials = true;
+
+            navCodeunitService.Url = @"http://" + connection_Server + @":" + connection_Port + @"/" + connection_Instance + @"/WS/" + companyname + @"/" + "Codeunit" + @"/" + "FieldsCUExtension";
+            Class_Connection.navCodeunitService.UseDefaultCredentials = true;
         }
 
         static bool TestConnection()

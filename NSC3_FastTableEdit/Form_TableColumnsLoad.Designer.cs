@@ -243,17 +243,28 @@
             this.groupBox_Templates.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         private void ReloadFieldList()
         {
             List<Fields_Filter> filterArray = new List<Fields_Filter>();
+
             Fields_Filter fieldFilter = new Fields_Filter();
             fieldFilter.Field = Fields_Fields.TableNo;
             string currSelection = this.comboBox_Table.SelectedItem.ToString();
             fieldFilter.Criteria = currSelection.Substring(0, currSelection.IndexOf(' '));
             filterArray.Add(fieldFilter);
+
+            //Fields_Filter typeFilter = new Fields_Filter();
+            //typeFilter.Field = Fields_Fields.Type;
+            //typeFilter.Criteria = "Date | Time | DateFormula | Decimal | Text | Code | Boolean | Integer | Option | DateTime";
+            //filterArray.Add(typeFilter);
+
+            //Fields_Filter classFilter = new Fields_Filter();
+            //classFilter.Field = Fields_Fields.Class;
+            //classFilter.Criteria = "Normal";
+            //filterArray.Add(classFilter);
+
             Fields[] tableFieldList = Class_Connection.navFieldsService.ReadMultiple(filterArray.ToArray(), null, 0);
 
             string[] uniqueTableFieldList = tableFieldList.Where(x => x.PrimaryKey == 0).Select(x => x.FieldName.ToString()).Distinct().ToArray(); //string.Concat(x.FieldName + " \"" + x.Field_Caption + "\"") - dla nazwy i captiona

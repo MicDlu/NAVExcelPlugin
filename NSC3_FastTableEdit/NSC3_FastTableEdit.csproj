@@ -237,10 +237,12 @@
       <DependentUpon>Reference.map</DependentUpon>
     </None>
     <None Include="Web References\NAVFieldsService\Fields.wsdl" />
+    <None Include="Web References\NAVFieldsService\FieldsCUExtension.wsdl" />
     <None Include="Web References\NAVFieldsService\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <None Include="Web References\NAVFieldsService\SystemService.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\browser.png" />
@@ -251,7 +253,9 @@
   <ItemGroup>
     <None Include="Resources\startup.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Web References\NAVFieldsService\Services.disco" />
+  </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
@@ -259,10 +263,10 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="http://srv-nav:7038/NAV2016PL/WS/CRONUS%2520Polska%2520Sp.%2520z%2520o.o./Page/Fields">
+    <WebReferenceUrl Include="http://SRV-nav:7058/NAV2016PL/WS/CRONUS%2520Polska%2520Sp.%2520z%2520o.o./Services">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\NAVFieldsService\</RelPath>
-      <UpdateFromURL>http://srv-nav:7038/NAV2016PL/WS/CRONUS%2520Polska%2520Sp.%2520z%2520o.o./Page/Fields</UpdateFromURL>
+      <UpdateFromURL>http://SRV-nav:7058/NAV2016PL/WS/CRONUS%2520Polska%2520Sp.%2520z%2520o.o./Services</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>

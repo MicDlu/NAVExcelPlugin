@@ -17,8 +17,6 @@ namespace NSC3_FastTableEdit
         static public int tableNumber;
         static public List<String> tableFieldList = new List<string>();
 
-
-
         static public void SetTable(string name, List<String> fieldList)
         {
             tableNumber = Int32.Parse(name.Substring(0, name.IndexOf(' ')));

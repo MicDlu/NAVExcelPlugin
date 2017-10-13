@@ -123,10 +123,31 @@ namespace NSC3_FastTableEdit
             Globals.ThisAddIn.Application.Cells.Locked = false;
             activeWorksheet.UsedRange.EntireColumn.ClearFormats();
             activeWorksheet.UsedRange.EntireColumn.Borders.LineStyle = Excel.XlLineStyle.xlLineStyleNone;
+
+            char invisible = '\u2063';
+            int column = 1;
+            bool headerPresent = false;
+            while(((Excel.Range)activeWorksheet.Cells[1, column]).Value2 != null)
+            {
+                string text = ((Excel.Range)activeWorksheet.Cells[1, column]).Text;
+                if (text.Contains(invisible))
+                {
+                    headerPresent = true;
+                    ((Excel.Range)activeWorksheet.Cells[1, column]).Value2 = null;
+                }
+                column++;
+            }
+
+            if(!headerPresent)
+            {
+                Excel.Range line = (Excel.Range)activeWorksheet.Rows[1];
+                line.Insert(Excel.XlInsertShiftDirection.xlShiftDown,false);
+            }
+
             for (int i = 0; i < headerList.Count; i++)
             {
                 int iterator = i + 1;
-                char invisible = '\u2063';
+                
                 ((Excel.Range)activeWorksheet.Cells[1, iterator]).Value2 = invisible + headerList[i];
                 ((Excel.Range)activeWorksheet.Cells[1, iterator]).Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Silver);
                 ((Excel.Range)activeWorksheet.Cells[1, iterator]).ColumnWidth = 15;
@@ -144,7 +165,6 @@ namespace NSC3_FastTableEdit
                 Globals.ThisAddIn.Application.ActiveWorkbook.Save();
                 SaveDataToXML();
             }
-            //Class_ValidateRecords.SelectRows();
         }
 
         private void buttonSetConnection_Click(object sender, RibbonControlEventArgs e)
@@ -181,7 +201,7 @@ namespace NSC3_FastTableEdit
             XmlElement tableData = NewElement("tabledata");
             XmlElement tableContent = NewElement("tablecontent");
 
-            XmlElement tableName = NewElement("tablenumber");
+            XmlElement tableName = NewElement("tablename");
             XmlText name = NewText(Class_Table.tableName);
             tableName.AppendChild(name);
 
@@ -198,9 +218,10 @@ namespace NSC3_FastTableEdit
 
             Excel.Worksheet activeWorksheet = Globals.ThisAddIn.Application.ActiveSheet;
             int rowCounter = 2;
-            while (((Excel.Range)activeWorksheet.Cells[rowCounter, 1]).Value2 != null)
+
+            while (true)
             {
-                //List<string> chosenFields = Form_TableColumnsLoad.Columns();
+                bool rowIsEmpty = true;
                 XmlElement record = NewElement("record");
                 for (int i=0; i < currentTableChosenColumns.Count; i++)
                 {
@@ -213,16 +234,23 @@ namespace NSC3_FastTableEdit
                     {
                         key = currentTableChosenColumns[i];
                     }
-                    XmlElement field = NewElement(Form_TableColumnsLoad.numberDictionary[key].ToString());
+                    XmlElement field = NewElement("f" + Form_TableColumnsLoad.numberDictionary[key].ToString());
                     XmlText text = NewText(((Excel.Range)activeWorksheet.Cells[rowCounter, i + 1]).Text);
+
+                    if (text.Value != "")
+                        rowIsEmpty = false;
+
                     field.AppendChild(text);
                     record.AppendChild(field);
                 }
+                if (rowIsEmpty)
+                    break;
+
                 tableContent.AppendChild(record);
                 rowCounter++;
             }
-            
-            data.Save(@"C:\data.xml");
+            Class_Connection.navCodeunitService.ProcessData(data.InnerXml);
+            //data.Save(@"C:\data.xml");
         }
         XmlDocument data = new XmlDocument();
         List<string> currentTableChosenColumns;

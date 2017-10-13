@@ -3,7 +3,16 @@
   <Profiles />
   <Settings>
     <Setting Name="NSC3_FastTableEdit_Fields_Fields_Service" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://srv-nav:7038/NAV2016PL/WS/CRONUS%20Polska%20Sp.%20z%20o.o./Page/Fields</Value>
+      <Value Profile="(Default)">http://srv-nav:7058/NAV2016PL/WS/CRONUS%20Polska%20Sp.%20z%20o.o./Codeunit/FieldsCUExtension</Value>
+    </Setting>
+    <Setting Name="NSC3_FastTableEdit_NAVFieldsService_Fields_Service" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://srv-nav:7058/NAV2016PL/WS/CRONUS%20Polska%20Sp.%20z%20o.o./Page/Fields</Value>
+    </Setting>
+    <Setting Name="NSC3_FastTableEdit_NAVFieldsService_Fields" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://srv-nav:7058/NAV2016PL/WS/CRONUS%20Polska%20Sp.%20z%20o.o./Codeunit/Fields</Value>
+    </Setting>
+    <Setting Name="NSC3_FastTableEdit_NAVFieldsService_SystemService" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://srv-nav:7058/NAV2016PL/WS/CRONUS%20Polska%20Sp.%20z%20o.o./SystemService</Value>
     </Setting>
   </Settings>
 </SettingsFile>
