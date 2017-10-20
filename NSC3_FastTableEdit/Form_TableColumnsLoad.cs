@@ -1,12 +1,10 @@
-﻿using System;
+﻿using NSC3_FastTableEdit.NAVFieldsService;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace NSC3_FastTableEdit
 {
@@ -125,17 +123,31 @@ namespace NSC3_FastTableEdit
 
         private void comboBox_Templates_DropDown(object sender, EventArgs e)
         {
+            loadedTemplates = Class_Table.GetTemplateList();
             comboBox_Templates.Items.Clear();
-            comboBox_Templates.Items.AddRange(Class_Table.GetTemplateList().ToArray());
+            comboBox_Templates.Items.AddRange(loadedTemplates.ToArray());
+            comboBox_Templates.DisplayMember = "Name";
         }
 
         private void comboBox_Templates_SelectedValueChanged(object sender, EventArgs e)
         {
-            Class_Table.GetTemplate(comboBox_Templates.Text);
-            listBox_ChosenColumns.Items.Clear();
-            foreach (var item in Class_Table.tableFieldList)
+            Class_Template chosenTemplate = (Class_Template)comboBox_Templates.SelectedItem;
+            string searchString = chosenTemplate.TableNo + " ";
+            this.comboBox_Table.SelectedIndex = comboBox_Table.FindString(searchString);
+            ReloadFieldList();
+            
+            foreach (string item in chosenTemplate.Fields)
             {
-                listBox_ChosenColumns.Items.Add(item);
+                string PKitem = "* " + item;
+                if (!(listBox_ChosenColumns.Items.Contains(PKitem)))
+                {
+                    listBox_ChosenColumns.Items.Add(item);
+                }
+                
+                if(listBox_Columns.Items.Contains(item))
+                {
+                    listBox_Columns.Items.Remove(item);
+                }
             }
         }
 
@@ -144,15 +156,134 @@ namespace NSC3_FastTableEdit
             Class_Table.SetTable(comboBox_Table.Text, listBox_ChosenColumns.Items.Cast<String>().ToList());
         }
 
+        public void SetCurrentTemplate()
+        {
+            Class_Template.currentTemplate = new Class_Template(comboBox_Templates.Text, Class_Table.tableNumber, listBox_ChosenColumns.Items.Cast<String>().ToList());
+        }
+
         private void button_Save_Click(object sender, EventArgs e)
         {
-            SetTemplateParams();
-               // Class_Table.SaveTemplate(comboBox_Templates.Text);
+            if(comboBox_Templates.Text != "")
+            {
+                SetTemplateParams();
+                SendTemplateXml();
+            }
+            else
+            {
+                MessageBox.Show("Please fill in the template name before proceeding", "Empty template name", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+               
         }
 
         private void button_OK_Click(object sender, EventArgs e)
         {
-            SetTemplateParams();
+            if (comboBox_Templates.Text != "")
+            {
+                SetTemplateParams();
+                SetCurrentTemplate();
+                SendTemplateXml();
+            }
+            else
+            {
+                MessageBox.Show("Please fill in the template name before proceeding", "Empty template name", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.DialogResult = DialogResult.None;
+            }
+            
+        }
+
+        private void SendTemplateXml()
+        {
+            template = new XmlDocument();
+            XmlDeclaration declaration = template.CreateXmlDeclaration("1.0", "UTF-8", null);
+            XmlElement root = template.DocumentElement;
+            template.InsertBefore(declaration, root);
+
+            XmlElement package = NewElement("package");
+            XmlElement name = NewElement("name");
+            XmlElement table = NewElement("tabno");
+            XmlElement fields = NewElement("fields");
+
+            XmlText pkgName = NewText(comboBox_Templates.Text);
+            XmlText tabNo = NewText(Class_Table.tableNumber.ToString());
+            
+            name.AppendChild(pkgName);
+            table.AppendChild(tabNo);
+
+            foreach(string field in listBox_ChosenColumns.Items)
+            {
+                string key;
+                if (field.StartsWith("*"))
+                {
+                    key = field.Substring(field.IndexOf("* ") + 2);
+                }
+                else
+                {
+                    key = field;
+                }
+
+                XmlElement fieldno = NewElement("fieldno");
+                XmlText nameToNo = NewText(numberDictionary[key].ToString());
+
+                fieldno.AppendChild(nameToNo);
+                fields.AppendChild(fieldno);
+            }
+
+            template.AppendChild(package);
+            package.AppendChild(name);
+            package.AppendChild(table);
+            package.AppendChild(fields);
+
+            Class_Connection.navTemplateService.CreateTemplate(template.InnerXml);
+        }
+
+        public static void CreateDictionary(string key)
+        {
+            List<Fields_Filter> filterArray = new List<Fields_Filter>();
+            Fields_Filter fieldFilter = new Fields_Filter();
+            fieldFilter.Field = Fields_Fields.TableNo;
+            fieldFilter.Criteria = key;
+            filterArray.Add(fieldFilter);
+
+            Fields[] tableFieldList = Class_Connection.navFieldsService.ReadMultiple(filterArray.ToArray(), null, 0);
+
+            numberDictionary = new Dictionary<string, int>();
+            numberDictionary = tableFieldList.Select(x => new { num = x.No, name = x.FieldName }).ToDictionary(d => d.name, d => d.num);
+        }
+
+        private XmlElement NewElement(string name)
+        {
+            return template.CreateElement(string.Empty, name, string.Empty);
+        }
+
+        private XmlText NewText(string content)
+        {
+            return template.CreateTextNode(content);
+        }
+
+        XmlDocument template = new XmlDocument();
+        List<Class_Template> loadedTemplates = new List<Class_Template>();
+
+        private void Form_TableColumnsLoad_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            List<Class_Template> templates = comboBox_Templates.Items.Cast<Class_Template>().ToList();
+            List<string> templateNames = templates.Select(x => x.Name).ToList();
+            if (!templateNames.Contains(comboBox_Templates.Text) && comboBox_Templates.Text != "")
+            {
+                DialogResult result = MessageBox.Show("Template was not saved, do you want to save it under the current name?", "Template not saved", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                if (DialogResult == DialogResult.Yes)
+                {
+                    if (comboBox_Templates.Text != "")
+                    {
+                        SendTemplateXml();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Please fill in the template name before proceeding", "Empty template name", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        this.DialogResult = DialogResult.None;
+                        e.Cancel = true;
+                    }
+                }
+            }
         }
     }
 }

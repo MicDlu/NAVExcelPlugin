@@ -180,7 +180,9 @@
             // comboBox_Templates
             // 
             this.comboBox_Templates.FormattingEnabled = true;
+            this.comboBox_Templates.IntegralHeight = false;
             this.comboBox_Templates.Location = new System.Drawing.Point(6, 19);
+            this.comboBox_Templates.MaxLength = 20;
             this.comboBox_Templates.Name = "comboBox_Templates";
             this.comboBox_Templates.Size = new System.Drawing.Size(243, 21);
             this.comboBox_Templates.TabIndex = 13;
@@ -240,12 +242,14 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Form_TableColumnsLoad";
             this.Text = "Insert Headers";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form_TableColumnsLoad_FormClosing);
             this.groupBox_Templates.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
-        private void ReloadFieldList()
+        public void ReloadFieldList()
         {
             List<Fields_Filter> filterArray = new List<Fields_Filter>();
 
@@ -254,16 +258,6 @@
             string currSelection = this.comboBox_Table.SelectedItem.ToString();
             fieldFilter.Criteria = currSelection.Substring(0, currSelection.IndexOf(' '));
             filterArray.Add(fieldFilter);
-
-            //Fields_Filter typeFilter = new Fields_Filter();
-            //typeFilter.Field = Fields_Fields.Type;
-            //typeFilter.Criteria = "Date | Time | DateFormula | Decimal | Text | Code | Boolean | Integer | Option | DateTime";
-            //filterArray.Add(typeFilter);
-
-            //Fields_Filter classFilter = new Fields_Filter();
-            //classFilter.Field = Fields_Fields.Class;
-            //classFilter.Criteria = "Normal";
-            //filterArray.Add(classFilter);
 
             Fields[] tableFieldList = Class_Connection.navFieldsService.ReadMultiple(filterArray.ToArray(), null, 0);
 
@@ -291,7 +285,6 @@
             filterArray.Add(fieldFilter);
 
             Fields[] tableFieldList = Class_Connection.navFieldsService.ReadMultiple(filterArray.ToArray(), null, 0);
-            //Fields[] allFieldList = Class_Connection.navFieldsService.ReadMultiple(filterArray.ToArray(), null, 0);
             string[] uniqueFieldList = tableFieldList.Select(x => string.Concat(x.TableNo, ' ', x.TableName)).Distinct().ToArray();
             this.comboBox_Table.Items.AddRange(uniqueFieldList);
         }
@@ -314,10 +307,10 @@
         private string[] currentTablePKeyList;
         public static Dictionary<string,int> numberDictionary;
         private System.Windows.Forms.GroupBox groupBox_Templates;
-        private System.Windows.Forms.ComboBox comboBox_Templates;
         private System.Windows.Forms.Button button_Save;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.ComboBox comboBox_Templates;
     }
 
     

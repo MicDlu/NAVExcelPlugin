@@ -140,21 +140,25 @@ namespace NSC3_FastTableEdit
 
             if(!headerPresent)
             {
-                Excel.Range line = (Excel.Range)activeWorksheet.Rows[1];
+                Excel.Range line = (Excel.Range)activeWorksheet.Rows[2];
                 line.Insert(Excel.XlInsertShiftDirection.xlShiftDown,false);
             }
-
+            int iterator = 0;
             for (int i = 0; i < headerList.Count; i++)
             {
-                int iterator = i + 1;
+                iterator = i + 1;
                 
-                ((Excel.Range)activeWorksheet.Cells[1, iterator]).Value2 = invisible + headerList[i];
-                ((Excel.Range)activeWorksheet.Cells[1, iterator]).Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Silver);
-                ((Excel.Range)activeWorksheet.Cells[1, iterator]).ColumnWidth = 15;
-                ((Excel.Range)activeWorksheet.Range[activeWorksheet.Cells[1, 1], activeWorksheet.Cells[1, headerList.Count]]).EntireColumn.Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
+                ((Excel.Range)activeWorksheet.Cells[2, iterator]).Value2 = invisible + headerList[i];
+                ((Excel.Range)activeWorksheet.Cells[2, iterator]).Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Silver);
+                ((Excel.Range)activeWorksheet.Cells[2, iterator]).ColumnWidth = 15;
+                ((Excel.Range)activeWorksheet.Range[activeWorksheet.Cells[2, 1], activeWorksheet.Cells[2, headerList.Count]]).EntireColumn.Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
             }
+            ((Excel.Range)activeWorksheet.Cells[1, 1]).Value2 = invisible + Class_Template.currentTemplate.Name;
+
             Globals.ThisAddIn.Application.Cells.Locked = false;
-            ((Excel.Range)activeWorksheet.Range[activeWorksheet.Cells[1, 1], activeWorksheet.Cells[1, headerList.Count]]).Locked = true;
+            ((Excel.Range)activeWorksheet.Cells[1, 1]).Locked = true;
+            ((Excel.Range)activeWorksheet.Cells[1, 1]).Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Silver);
+            ((Excel.Range)activeWorksheet.Range[activeWorksheet.Cells[2, 1], activeWorksheet.Cells[2, headerList.Count]]).Locked = true;
             activeWorksheet.Protect();
         }
 
@@ -162,8 +166,44 @@ namespace NSC3_FastTableEdit
         {
             if (WorkbookMeetsUsageCriteria())
             {
-                Globals.ThisAddIn.Application.ActiveWorkbook.Save();
-                SaveDataToXML();
+                if (Class_Table.SetLastConnection())
+                {
+                    if (Class_Template.currentTemplate == null)
+                    {
+                        char invisible = '\u2063';
+                        Excel.Worksheet activeWorksheet = Globals.ThisAddIn.Application.ActiveSheet;
+                        string cell = ((Excel.Range)activeWorksheet.Cells[1, 1]).Text;
+                        if (cell.Contains(invisible))
+                        {
+                            string noInvCell = cell.Substring(cell.IndexOf(invisible) + 1);
+                            noInvCell = noInvCell.ToUpper();
+                            List<Class_Template> tempList = Class_Table.GetTemplateList();
+                            int index = tempList.FindIndex(f => f.Name == noInvCell);
+                            if (index >= 0)
+                            {
+                                Class_Template.currentTemplate = tempList[index];
+                                Class_Table.SetTable(Class_Template.currentTemplate.TableNo,                     Class_Template.currentTemplate.Fields);
+                                Globals.ThisAddIn.Application.ActiveWorkbook.Save();
+                                SaveDataToXML();
+                                if(!errorOccured)
+                                    MessageBox.Show("Successfully inserted records", "Success", MessageBoxButtons.OK,           MessageBoxIcon.Information);
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("Please insert a header and template first", "No header and template", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                    else
+                    {
+                        Class_Table.SetTable(Class_Template.currentTemplate.TableNo, Class_Template.currentTemplate.Fields);
+                        Globals.ThisAddIn.Application.ActiveWorkbook.Save();
+                        SaveDataToXML();
+                        if(!errorOccured)
+                            MessageBox.Show("Successfully inserted records", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        errorOccured = false;
+                    }
+                }
             }
         }
 
@@ -217,7 +257,12 @@ namespace NSC3_FastTableEdit
             data.AppendChild(table);
 
             Excel.Worksheet activeWorksheet = Globals.ThisAddIn.Application.ActiveSheet;
-            int rowCounter = 2;
+            int rowCounter = 3;
+
+            currentTableChosenColumns = Class_Table.tableFieldList;
+
+            if (Form_TableColumnsLoad.numberDictionary == null)
+                Form_TableColumnsLoad.CreateDictionary(Class_Table.tableNumber.ToString());
 
             while (true)
             {
@@ -234,6 +279,8 @@ namespace NSC3_FastTableEdit
                     {
                         key = currentTableChosenColumns[i];
                     }
+                   
+
                     XmlElement field = NewElement("f" + Form_TableColumnsLoad.numberDictionary[key].ToString());
                     XmlText text = NewText(((Excel.Range)activeWorksheet.Cells[rowCounter, i + 1]).Text);
 
@@ -248,11 +295,23 @@ namespace NSC3_FastTableEdit
 
                 tableContent.AppendChild(record);
                 rowCounter++;
+                data.Save(@"C:/datata.txt");
             }
-            Class_Connection.navCodeunitService.ProcessData(data.InnerXml);
+            try
+            {
+                Class_Connection.navCodeunitService.ProcessData(data.InnerXml);
+            }
+            catch(Exception ex)
+            {
+                string exceptionMessage = ex.Message;
+                MessageBox.Show(exceptionMessage, "NAV Processing exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                errorOccured = true;
+                
+            }
             //data.Save(@"C:\data.xml");
         }
         XmlDocument data = new XmlDocument();
-        List<string> currentTableChosenColumns;
+        List<string> currentTableChosenColumns = Class_Table.tableFieldList;
+        bool errorOccured = false;
     }
 }

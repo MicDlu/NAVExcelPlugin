@@ -50,7 +50,7 @@
             this.textBox_Server.Location = new System.Drawing.Point(12, 99);
             this.textBox_Server.Name = "textBox_Server";
             this.textBox_Server.Size = new System.Drawing.Size(346, 20);
-            this.textBox_Server.TabIndex = 0;
+            this.textBox_Server.TabIndex = 1;
             // 
             // label_Server
             // 
@@ -91,7 +91,7 @@
             this.textBox_Port.Location = new System.Drawing.Point(12, 216);
             this.textBox_Port.Name = "textBox_Port";
             this.textBox_Port.Size = new System.Drawing.Size(345, 20);
-            this.textBox_Port.TabIndex = 7;
+            this.textBox_Port.TabIndex = 4;
             // 
             // label_Instance
             // 
@@ -107,7 +107,7 @@
             this.textBox_Instance.Location = new System.Drawing.Point(12, 138);
             this.textBox_Instance.Name = "textBox_Instance";
             this.textBox_Instance.Size = new System.Drawing.Size(345, 20);
-            this.textBox_Instance.TabIndex = 5;
+            this.textBox_Instance.TabIndex = 2;
             // 
             // button_OK
             // 
@@ -115,7 +115,7 @@
             this.button_OK.Location = new System.Drawing.Point(202, 242);
             this.button_OK.Name = "button_OK";
             this.button_OK.Size = new System.Drawing.Size(75, 23);
-            this.button_OK.TabIndex = 9;
+            this.button_OK.TabIndex = 5;
             this.button_OK.Text = "OK";
             this.button_OK.UseVisualStyleBackColor = true;
             this.button_OK.Click += new System.EventHandler(this.button_OK_Click);
@@ -126,7 +126,7 @@
             this.button_Cancel.Location = new System.Drawing.Point(283, 242);
             this.button_Cancel.Name = "button_Cancel";
             this.button_Cancel.Size = new System.Drawing.Size(75, 23);
-            this.button_Cancel.TabIndex = 10;
+            this.button_Cancel.TabIndex = 6;
             this.button_Cancel.Text = "Cancel";
             this.button_Cancel.UseVisualStyleBackColor = true;
             // 
@@ -146,7 +146,7 @@
             this.comboBox_Templates.Location = new System.Drawing.Point(6, 19);
             this.comboBox_Templates.Name = "comboBox_Templates";
             this.comboBox_Templates.Size = new System.Drawing.Size(189, 21);
-            this.comboBox_Templates.TabIndex = 13;
+            this.comboBox_Templates.TabIndex = 0;
             this.comboBox_Templates.DropDown += new System.EventHandler(this.comboBox_Templates_DropDown);
             this.comboBox_Templates.SelectedValueChanged += new System.EventHandler(this.comboBox_Templates_SelectedValueChanged);
             // 
@@ -167,7 +167,7 @@
             this.button1.Location = new System.Drawing.Point(201, 19);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(69, 23);
-            this.button1.TabIndex = 14;
+            this.button1.TabIndex = 10;
             this.button1.Text = "Save to file";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button_SaveToFile_Click);

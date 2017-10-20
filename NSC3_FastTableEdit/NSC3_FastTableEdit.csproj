@@ -160,6 +160,7 @@
   <ItemGroup>
     <Compile Include="Class_Connection.cs" />
     <Compile Include="Class_Table.cs" />
+    <Compile Include="Class_Template.cs" />
     <Compile Include="Class_ValidateRecords.cs" />
     <Compile Include="Form_Connection.cs">
       <SubType>Form</SubType>
@@ -243,6 +244,11 @@
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
     <None Include="Web References\NAVFieldsService\SystemService.wsdl" />
+    <None Include="Web References\NAVFieldsService\TemplatePage.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\NAVFieldsService\TemplatePage.wsdl" />
+    <None Include="Web References\NAVFieldsService\TemplateService.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\browser.png" />

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace NSC3_FastTableEdit
@@ -24,80 +25,43 @@ namespace NSC3_FastTableEdit
             tableFieldList = fieldList;
         }
 
-        static public bool SaveTemplate(string templateName)
+        static public void SetTable(int number , List<string> fieldList)
         {
-            if (!System.IO.Directory.Exists(directoryPath))
-                System.IO.Directory.CreateDirectory(directoryPath);
-            if (!System.IO.File.Exists(templatePath))
-                System.IO.File.Create(templatePath).Close();
-
-
-            List<string> templateContent = new List<string>();
-            templateContent.Add("#" + templateName);
-            templateContent = templateContent.Concat(tableFieldList).ToList();
-            List<string> fileContent = System.IO.File.ReadAllLines(templatePath).ToList();
-
-            if (fileContent.Contains(templateContent[0]))
-            {
-                string oldTemplate = "-" + string.Join("\n-", tableFieldList.ToArray());
-                string newTemplate = "-" + string.Join("\n-", templateContent.Skip(1).ToArray());
-                string dialogText = "Do you want to overwrite template \"" + templateName + "\"?\n\n" + oldTemplate + "\n\nwith\n\n" + newTemplate;
-                string dialogTitle = "\"" + templateName + "\" template overwrite";
-                DialogResult dialogResult = MessageBox.Show(dialogText, dialogTitle, MessageBoxButtons.YesNo);
-                if (dialogResult == DialogResult.No)
-                    return false;
-
-                int index = fileContent.IndexOf(templateContent[0]);
-                while (fileContent.Count > index + 1 && !fileContent[index+1].StartsWith("#"))
-                {
-                    fileContent.RemoveAt(index);
-                }
-
-                fileContent.InsertRange(index, templateContent);
-                System.IO.File.WriteAllLines(templatePath, fileContent);
-            }
-            else
-            {
-                templateContent.Add("");
-                System.IO.File.AppendAllLines(templatePath, templateContent);
-            }
-            return true;
+            tableName = "";
+            tableNumber = number;
+            tableFieldList = fieldList;
         }
 
-        static public List<string> GetTemplateList()
-        {
-            List<string> templateList = new List<string>();
-            if (!System.IO.File.Exists(templatePath))
-                return templateList;
+        //static public void SetTable(int number, )
+      //  {
 
-            string[] fileContent = System.IO.File.ReadAllLines(templatePath);
-            foreach (var line in fileContent)
+       // }
+
+        static public List<Class_Template> GetTemplateList()
+        {
+            List<Class_Template> returnList = new List<Class_Template>();
+            
+            string xmlString = Class_Connection.navTemplateService.ListTemplates();
+
+            XmlDocument templates = new XmlDocument();
+            templates.LoadXml(xmlString);
+
+            XmlNodeList templateList = templates.SelectNodes("//template");
+
+            foreach(XmlNode template in templateList)
             {
-                if (line.StartsWith("#"))
+                XmlNode name = template.SelectSingleNode(".//name");
+                XmlNode tabNo = template.SelectSingleNode(".//tabno");
+                Class_Template templateObject = new Class_Template(name.InnerText, Int32.Parse(tabNo.InnerText));
+                XmlNodeList fields = template.SelectNodes(".//field");
+
+                foreach(XmlNode field in fields)
                 {
-                    templateList.Add(line.Substring(1));
+                    templateObject.Fields.Add(field.InnerText);
                 }
+                returnList.Add(templateObject);
             }
-            return templateList;
-        }
-
-        static public bool GetTemplate(string templateName)
-        {
-            if (!System.IO.File.Exists(templatePath))
-                return false;
-
-            List<string> fileContent = System.IO.File.ReadAllLines(templatePath).ToList();
-            int index = fileContent.IndexOf("#" + templateName);
-
-            if (tableFieldList.Any())
-                tableFieldList.Clear();
-
-            while (++index < fileContent.Count() && fileContent[index] != "")
-            {
-                tableFieldList.Add(fileContent[index]);
-            }
-
-            return true;
+            return returnList;
         }
 
         static public bool SetLastConnection()
