@@ -10,6 +10,8 @@ namespace NSC3_FastTableEdit
 {
     public partial class Form_TableColumnsLoad : Form
     {
+        private List<string> currentTemplateFields = new List<string>();
+
         public Form_TableColumnsLoad()
         {
             InitializeComponent();
@@ -131,10 +133,12 @@ namespace NSC3_FastTableEdit
 
         private void comboBox_Templates_SelectedValueChanged(object sender, EventArgs e)
         {
+            currentTempName = comboBox_Templates.Text;
             Class_Template chosenTemplate = (Class_Template)comboBox_Templates.SelectedItem;
             string searchString = chosenTemplate.TableNo + " ";
             this.comboBox_Table.SelectedIndex = comboBox_Table.FindString(searchString);
             ReloadFieldList();
+            currentTemplateFields = chosenTemplate.Fields;
             
             foreach (string item in chosenTemplate.Fields)
             {
@@ -165,30 +169,64 @@ namespace NSC3_FastTableEdit
         {
             if(comboBox_Templates.Text != "")
             {
-                SetTemplateParams();
-                SendTemplateXml();
+                try
+                {
+                    SetTemplateParams();
+                    SendTemplateXml();
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show("You don't have the permission to modify this template", "Permission exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
             else
             {
                 MessageBox.Show("Please fill in the template name before proceeding", "Empty template name", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-               
         }
 
         private void button_OK_Click(object sender, EventArgs e)
         {
-            if (comboBox_Templates.Text != "")
+            loadedTemplates = Class_Table.GetTemplateList();
+            comboBox_Templates.Items.Clear();
+            comboBox_Templates.Items.AddRange(loadedTemplates.ToArray());
+            if (comboBox_Table.Text != "")
             {
-                SetTemplateParams();
-                SetCurrentTemplate();
-                SendTemplateXml();
+                if (comboBox_Templates.Text != "")
+                {
+                    List<string> chosenColumnsFixed = listBox_ChosenColumns.Items.Cast<string>().ToList().Select(s => s.Replace("* ", "")).ToList();
+                    var areEquivalent = (chosenColumnsFixed.Count == currentTemplateFields.Count) && !chosenColumnsFixed.Except(currentTemplateFields).Any();
+                    if (!areEquivalent && currentTempName != comboBox_Templates.Text)
+                    {
+                        try
+                        {
+                            SetTemplateParams();
+                            SetCurrentTemplate();
+                            SendTemplateXml();
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message, "Saving exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            this.DialogResult = DialogResult.None;
+                        }
+                    }
+                    else
+                    {
+                        SetTemplateParams();
+                        SetCurrentTemplate();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Please fill in the template name before proceeding", "Empty template name", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    this.DialogResult = DialogResult.None;
+                }
             }
             else
             {
-                MessageBox.Show("Please fill in the template name before proceeding", "Empty template name", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Please select a table before proceeding", "No table selected", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.DialogResult = DialogResult.None;
             }
-            
         }
 
         private void SendTemplateXml()
@@ -261,26 +299,30 @@ namespace NSC3_FastTableEdit
         }
 
         XmlDocument template = new XmlDocument();
+        string currentTempName = "";
         List<Class_Template> loadedTemplates = new List<Class_Template>();
 
         private void Form_TableColumnsLoad_FormClosing(object sender, FormClosingEventArgs e)
         {
-            List<Class_Template> templates = comboBox_Templates.Items.Cast<Class_Template>().ToList();
-            List<string> templateNames = templates.Select(x => x.Name).ToList();
-            if (!templateNames.Contains(comboBox_Templates.Text) && comboBox_Templates.Text != "")
+            if (this.DialogResult != DialogResult.OK)
             {
-                DialogResult result = MessageBox.Show("Template was not saved, do you want to save it under the current name?", "Template not saved", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
-                if (DialogResult == DialogResult.Yes)
+                List<Class_Template> templates = comboBox_Templates.Items.Cast<Class_Template>().ToList();
+                List<string> templateNames = templates.Select(x => x.Name).ToList();
+                if (!templateNames.Contains(comboBox_Templates.Text) && comboBox_Templates.Text != "")
                 {
-                    if (comboBox_Templates.Text != "")
+                    DialogResult result = MessageBox.Show("Template was not saved, do you want to save it under the current name?", "Template not saved", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                    if (DialogResult == DialogResult.Yes)
                     {
-                        SendTemplateXml();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Please fill in the template name before proceeding", "Empty template name", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        this.DialogResult = DialogResult.None;
-                        e.Cancel = true;
+                        if (comboBox_Templates.Text != "")
+                        {
+                            SendTemplateXml();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Please fill in the template name before proceeding", "Empty template name", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            this.DialogResult = DialogResult.None;
+                            e.Cancel = true;
+                        }
                     }
                 }
             }

@@ -99,7 +99,7 @@ namespace NSC3_FastTableEdit
             {
                 Globals.ThisAddIn.Application.ActiveWorkbook.Save();
                 LoadConnection();
-                if (Class_Table.SetLastConnection())
+                if (Class_Table.SetLastConnection() && Class_Connection.connection_Company != "" && Class_Connection.connection_Instance != "" && Class_Connection.connection_Port != "" && Class_Connection.connection_Server != "")
                 {
                     Form_TableColumnsLoad loadHeaderForm = new Form_TableColumnsLoad();
                     if (loadHeaderForm.ShowDialog() == DialogResult.OK)
@@ -127,13 +127,13 @@ namespace NSC3_FastTableEdit
             char invisible = '\u2063';
             int column = 1;
             bool headerPresent = false;
-            while(((Excel.Range)activeWorksheet.Cells[1, column]).Value2 != null)
+            while(((Excel.Range)activeWorksheet.Cells[2, column]).Value2 != null)
             {
-                string text = ((Excel.Range)activeWorksheet.Cells[1, column]).Text;
+                string text = ((Excel.Range)activeWorksheet.Cells[2, column]).Text;
                 if (text.Contains(invisible))
                 {
                     headerPresent = true;
-                    ((Excel.Range)activeWorksheet.Cells[1, column]).Value2 = null;
+                    ((Excel.Range)activeWorksheet.Cells[2, column]).Value2 = null;
                 }
                 column++;
             }
@@ -166,7 +166,7 @@ namespace NSC3_FastTableEdit
         {
             if (WorkbookMeetsUsageCriteria())
             {
-                if (Class_Table.SetLastConnection())
+                if (Class_Table.SetLastConnection() && Class_Connection.connection_Company != "" && Class_Connection.connection_Instance != "" && Class_Connection.connection_Port != "" && Class_Connection.connection_Server != "")
                 {
                     if (Class_Template.currentTemplate == null)
                     {
@@ -203,6 +203,10 @@ namespace NSC3_FastTableEdit
                             MessageBox.Show("Successfully inserted records", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         errorOccured = false;
                     }
+                }
+                else
+                {
+                    MessageBox.Show("Please choose the connection first", "No connection", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }

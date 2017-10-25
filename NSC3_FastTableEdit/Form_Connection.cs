@@ -17,6 +17,11 @@ namespace NSC3_FastTableEdit
             Class_Connection.SetConnection(textBox_Server.Text, textBox_Instance.Text, textBox_Firm.Text, textBox_Port.Text);
         }
 
+        public void SetNoConnection()
+        {
+            Class_Connection.SetConnection("", "", "", "");
+        }
+
         private void Form_Connection_Load(object sender, EventArgs e)
         {
             if (Class_Connection.GetLastConnection())
@@ -33,6 +38,12 @@ namespace NSC3_FastTableEdit
             SetConnectionParams();
             Class_Connection.ConnectToWebService();
             Class_Connection.SaveLastConnection();
+            if(!Class_Connection.TestWSConnection())
+            {
+                this.DialogResult = DialogResult.None;
+                SetNoConnection();
+                Class_Connection.SaveLastConnection();
+            }
         }
 
         private void button_Save_Click(object sender, EventArgs e)
@@ -98,6 +109,11 @@ namespace NSC3_FastTableEdit
             textBox_Instance.Text = Class_Connection.connection_Instance;
             textBox_Firm.Text = Class_Connection.connection_Company;
             textBox_Port.Text = Class_Connection.connection_Port;
+        }
+
+        private void label_Firm_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

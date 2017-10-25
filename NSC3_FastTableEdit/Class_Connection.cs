@@ -1,6 +1,8 @@
-﻿using System;
+﻿using NSC3_FastTableEdit.NAVFieldsService;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace NSC3_FastTableEdit
@@ -47,7 +49,7 @@ namespace NSC3_FastTableEdit
             if (!ConnectionsExist())
             {
                 Excel.Worksheet actWorksheet = Globals.ThisAddIn.Application.ActiveSheet;
-                Excel.Worksheet worksheet = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Add(Type.Missing, Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets[Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Count]);
+                Excel.Worksheet worksheet = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Add(System.Type.Missing, Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets[Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Count]);
                 worksheet.Name = "Connections";
 
                 ((Excel.Range)worksheet.Cells[1, 6]).Value2 = "LAST_CONNECTION";
@@ -78,7 +80,7 @@ namespace NSC3_FastTableEdit
             if (!ConnectionsExist())
             {
                 Excel.Worksheet actWorksheet = Globals.ThisAddIn.Application.ActiveSheet;
-                Excel.Worksheet worksheet = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Add(Type.Missing, Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets[Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Count]);
+                Excel.Worksheet worksheet = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Add(System.Type.Missing, Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets[Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Count]);
                 worksheet.Name = "Connections";
 
                 ((Excel.Range)worksheet.Cells[1, 1]).Value2 = "Name";
@@ -197,25 +199,47 @@ namespace NSC3_FastTableEdit
 
         static public void ConnectToWebService()
         {
-            string companyname = System.Uri.EscapeDataString(connection_Company.Trim());
+            try
+            {
+                string companyname = System.Uri.EscapeDataString(connection_Company.Trim());
 
-            navFieldsService.Url = @"http://" + connection_Server + @":" + connection_Port + @"/" + connection_Instance + @"/WS/" + companyname + @"/" + "Page" + @"/" + "Fields";
-            navFieldsService.UseDefaultCredentials = true;
+                navFieldsService.Url = @"http://" + connection_Server + @":" + connection_Port + @"/" + connection_Instance + @"/WS/" + companyname + @"/" + "Page" + @"/" + "Fields";
+                navFieldsService.UseDefaultCredentials = true;
 
-            navCodeunitService.Url = @"http://" + connection_Server + @":" + connection_Port + @"/" + connection_Instance + @"/WS/" + companyname + @"/" + "Codeunit" + @"/" + "FieldsCUExtension";
-            navCodeunitService.UseDefaultCredentials = true;
+                navCodeunitService.Url = @"http://" + connection_Server + @":" + connection_Port + @"/" + connection_Instance + @"/WS/" + companyname + @"/" + "Codeunit" + @"/" + "FieldsCUExtension";
+                navCodeunitService.UseDefaultCredentials = true;
 
-            navTemplateService.Url = @"http://" + connection_Server + @":" + connection_Port + @"/" + connection_Instance + @"/WS/" + companyname + @"/" + "Codeunit" + @"/" + "TemplateService";
-            navTemplateService.UseDefaultCredentials = true;
-
-            //navTemplateReadService.Url = @"http://" + connection_Server + @":" + connection_Port + @"/" + connection_Instance + @"/WS/" + companyname + @"/" + "Page" + @"/" + "TemplatePage";
-            //navTemplateReadService.UseDefaultCredentials = true;
-
+                navTemplateService.Url = @"http://" + connection_Server + @":" + connection_Port + @"/" + connection_Instance + @"/WS/" + companyname + @"/" + "Codeunit" + @"/" + "TemplateService";
+                navTemplateService.UseDefaultCredentials = true;
+            }
+            catch(Exception ex)
+            {
+                string exceptionMessage = ex.Message;
+                MessageBox.Show(exceptionMessage, "Connection exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
-        static bool TestConnection()
+        static public bool TestWSConnection()
         {
-            return false;
+            try
+            {
+                List<Fields_Filter> filterArray = new List<Fields_Filter>();
+                Fields_Filter fieldFilter = new Fields_Filter();
+                fieldFilter.Field = Fields_Fields.TableNo;
+                fieldFilter.Criteria = "0";
+                filterArray.Add(fieldFilter);
+
+                Fields[] testList = navFieldsService.ReadMultiple(filterArray.ToArray(), null, 0);
+                bool TempOK = navTemplateService.TestCodeunitAvailability();
+                bool DataOK = navCodeunitService.TestCodeunitAvailability();
+                return true;
+            }
+            catch(Exception ex)
+            {
+                string exceptionMessage = ex.Message;
+                MessageBox.Show(exceptionMessage, "Connection exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
         }
     }
 }

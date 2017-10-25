@@ -66,9 +66,10 @@
             this.label_Firm.AutoSize = true;
             this.label_Firm.Location = new System.Drawing.Point(12, 161);
             this.label_Firm.Name = "label_Firm";
-            this.label_Firm.Size = new System.Drawing.Size(26, 13);
+            this.label_Firm.Size = new System.Drawing.Size(51, 13);
             this.label_Firm.TabIndex = 4;
-            this.label_Firm.Text = "Firm";
+            this.label_Firm.Text = "Company";
+            this.label_Firm.Click += new System.EventHandler(this.label_Firm_Click);
             // 
             // textBox_Firm
             // 
@@ -190,7 +191,7 @@
             this.Controls.Add(this.label_Port);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Form_Connection";
-            this.Text = "Form_Connection";
+            this.Text = "Connection";
             this.Load += new System.EventHandler(this.Form_Connection_Load);
             this.groupBox_Templates.ResumeLayout(false);
             this.ResumeLayout(false);
