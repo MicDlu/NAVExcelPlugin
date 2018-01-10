@@ -57,7 +57,7 @@ namespace NSC3_FastTableEdit
                 ((Excel.Range)worksheet.Cells[1, 8]).Value2 = connection_Instance;
                 ((Excel.Range)worksheet.Cells[1, 9]).Value2 = connection_Company;
                 ((Excel.Range)worksheet.Cells[1, 10]).Value2 = connection_Port;
-                ((Excel.Range)worksheet.Range[worksheet.Cells[1, 6], worksheet.Cells[1, 10]]).Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Firebrick);
+                ((Excel.Range)worksheet.Range[worksheet.Cells[1, 6], worksheet.Cells[1, 10]]).Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.LightBlue);
 
                 actWorksheet.Activate();
             }
@@ -70,7 +70,7 @@ namespace NSC3_FastTableEdit
                 ((Excel.Range)worksheet.Cells[1, 8]).Value2 = connection_Instance;
                 ((Excel.Range)worksheet.Cells[1, 9]).Value2 = connection_Company;
                 ((Excel.Range)worksheet.Cells[1, 10]).Value2 = connection_Port;
-                ((Excel.Range)worksheet.Range[worksheet.Cells[1, 6], worksheet.Cells[1, 10]]).Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Firebrick);
+                ((Excel.Range)worksheet.Range[worksheet.Cells[1, 6], worksheet.Cells[1, 10]]).Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.LightBlue);
             }
         }
 
@@ -88,14 +88,14 @@ namespace NSC3_FastTableEdit
                 ((Excel.Range)worksheet.Cells[1, 3]).Value2 = "Instance";
                 ((Excel.Range)worksheet.Cells[1, 4]).Value2 = "Company";
                 ((Excel.Range)worksheet.Cells[1, 5]).Value2 = "Port";
-                ((Excel.Range)worksheet.Range[worksheet.Cells[1, 1], worksheet.Cells[1, 5]]).Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Red);
+                ((Excel.Range)worksheet.Range[worksheet.Cells[1, 1], worksheet.Cells[1, 5]]).Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.CadetBlue);
 
                 ((Excel.Range)worksheet.Cells[2, 1]).Value2 = ConnectionName;
                 ((Excel.Range)worksheet.Cells[2, 2]).Value2 = connection_Server;
                 ((Excel.Range)worksheet.Cells[2, 3]).Value2 = connection_Instance;
                 ((Excel.Range)worksheet.Cells[2, 4]).Value2 = connection_Company;
                 ((Excel.Range)worksheet.Cells[2, 5]).Value2 = connection_Port;
-                ((Excel.Range)worksheet.Range[worksheet.Cells[2, 1], worksheet.Cells[2, 5]]).Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Blue);
+                ((Excel.Range)worksheet.Range[worksheet.Cells[2, 1], worksheet.Cells[2, 5]]).Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.CornflowerBlue);
 
                 actWorksheet.Activate();
             }
@@ -121,7 +121,7 @@ namespace NSC3_FastTableEdit
                     ((Excel.Range)worksheet.Cells[newRow, 3]).Value2 = connection_Instance;
                     ((Excel.Range)worksheet.Cells[newRow, 4]).Value2 = connection_Company;
                     ((Excel.Range)worksheet.Cells[newRow, 5]).Value2 = connection_Port;
-                    ((Excel.Range)worksheet.Range[worksheet.Cells[newRow, 1], worksheet.Cells[newRow, 5]]).Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Blue);
+                    ((Excel.Range)worksheet.Range[worksheet.Cells[newRow, 1], worksheet.Cells[newRow, 5]]).Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.CornflowerBlue);
                 }
                 else
                 {
@@ -130,14 +130,14 @@ namespace NSC3_FastTableEdit
                     ((Excel.Range)worksheet.Cells[1, 3]).Value2 = "Instance";
                     ((Excel.Range)worksheet.Cells[1, 4]).Value2 = "Company";
                     ((Excel.Range)worksheet.Cells[1, 5]).Value2 = "Port";
-                    ((Excel.Range)worksheet.Range[worksheet.Cells[1, 1], worksheet.Cells[1, 5]]).Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Red);
+                    ((Excel.Range)worksheet.Range[worksheet.Cells[1, 1], worksheet.Cells[1, 5]]).Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.CadetBlue);
 
                     ((Excel.Range)worksheet.Cells[2, 1]).Value2 = ConnectionName;
                     ((Excel.Range)worksheet.Cells[2, 2]).Value2 = Class_Connection.connection_Server;
                     ((Excel.Range)worksheet.Cells[2, 3]).Value2 = Class_Connection.connection_Instance;
                     ((Excel.Range)worksheet.Cells[2, 4]).Value2 = Class_Connection.connection_Company;
                     ((Excel.Range)worksheet.Cells[2, 5]).Value2 = Class_Connection.connection_Port;
-                    ((Excel.Range)worksheet.Range[worksheet.Cells[2, 1], worksheet.Cells[2, 5]]).Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Blue);
+                    ((Excel.Range)worksheet.Range[worksheet.Cells[2, 1], worksheet.Cells[2, 5]]).Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.CornflowerBlue);
                 }
                
             }

@@ -42,12 +42,15 @@
             this.comboBox_Templates = new System.Windows.Forms.ComboBox();
             this.groupBox_Templates = new System.Windows.Forms.GroupBox();
             this.button1 = new System.Windows.Forms.Button();
+            this.WSLink = new System.Windows.Forms.TextBox();
+            this.label_link = new System.Windows.Forms.Label();
+            this.button2 = new System.Windows.Forms.Button();
             this.groupBox_Templates.SuspendLayout();
             this.SuspendLayout();
             // 
             // textBox_Server
             // 
-            this.textBox_Server.Location = new System.Drawing.Point(12, 99);
+            this.textBox_Server.Location = new System.Drawing.Point(12, 158);
             this.textBox_Server.Name = "textBox_Server";
             this.textBox_Server.Size = new System.Drawing.Size(346, 20);
             this.textBox_Server.TabIndex = 1;
@@ -55,7 +58,7 @@
             // label_Server
             // 
             this.label_Server.AutoSize = true;
-            this.label_Server.Location = new System.Drawing.Point(12, 83);
+            this.label_Server.Location = new System.Drawing.Point(12, 142);
             this.label_Server.Name = "label_Server";
             this.label_Server.Size = new System.Drawing.Size(38, 13);
             this.label_Server.TabIndex = 2;
@@ -64,7 +67,7 @@
             // label_Firm
             // 
             this.label_Firm.AutoSize = true;
-            this.label_Firm.Location = new System.Drawing.Point(12, 161);
+            this.label_Firm.Location = new System.Drawing.Point(12, 220);
             this.label_Firm.Name = "label_Firm";
             this.label_Firm.Size = new System.Drawing.Size(51, 13);
             this.label_Firm.TabIndex = 4;
@@ -73,7 +76,7 @@
             // 
             // textBox_Firm
             // 
-            this.textBox_Firm.Location = new System.Drawing.Point(12, 177);
+            this.textBox_Firm.Location = new System.Drawing.Point(12, 236);
             this.textBox_Firm.Name = "textBox_Firm";
             this.textBox_Firm.Size = new System.Drawing.Size(346, 20);
             this.textBox_Firm.TabIndex = 3;
@@ -81,7 +84,7 @@
             // label_Port
             // 
             this.label_Port.AutoSize = true;
-            this.label_Port.Location = new System.Drawing.Point(12, 200);
+            this.label_Port.Location = new System.Drawing.Point(12, 259);
             this.label_Port.Name = "label_Port";
             this.label_Port.Size = new System.Drawing.Size(26, 13);
             this.label_Port.TabIndex = 8;
@@ -89,7 +92,7 @@
             // 
             // textBox_Port
             // 
-            this.textBox_Port.Location = new System.Drawing.Point(12, 216);
+            this.textBox_Port.Location = new System.Drawing.Point(12, 275);
             this.textBox_Port.Name = "textBox_Port";
             this.textBox_Port.Size = new System.Drawing.Size(345, 20);
             this.textBox_Port.TabIndex = 4;
@@ -97,7 +100,7 @@
             // label_Instance
             // 
             this.label_Instance.AutoSize = true;
-            this.label_Instance.Location = new System.Drawing.Point(12, 122);
+            this.label_Instance.Location = new System.Drawing.Point(12, 181);
             this.label_Instance.Name = "label_Instance";
             this.label_Instance.Size = new System.Drawing.Size(82, 13);
             this.label_Instance.TabIndex = 6;
@@ -105,7 +108,7 @@
             // 
             // textBox_Instance
             // 
-            this.textBox_Instance.Location = new System.Drawing.Point(12, 138);
+            this.textBox_Instance.Location = new System.Drawing.Point(12, 197);
             this.textBox_Instance.Name = "textBox_Instance";
             this.textBox_Instance.Size = new System.Drawing.Size(345, 20);
             this.textBox_Instance.TabIndex = 2;
@@ -113,7 +116,7 @@
             // button_OK
             // 
             this.button_OK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button_OK.Location = new System.Drawing.Point(202, 242);
+            this.button_OK.Location = new System.Drawing.Point(202, 301);
             this.button_OK.Name = "button_OK";
             this.button_OK.Size = new System.Drawing.Size(75, 23);
             this.button_OK.TabIndex = 5;
@@ -124,7 +127,7 @@
             // button_Cancel
             // 
             this.button_Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button_Cancel.Location = new System.Drawing.Point(283, 242);
+            this.button_Cancel.Location = new System.Drawing.Point(283, 301);
             this.button_Cancel.Name = "button_Cancel";
             this.button_Cancel.Size = new System.Drawing.Size(75, 23);
             this.button_Cancel.TabIndex = 6;
@@ -133,7 +136,7 @@
             // 
             // button_Save
             // 
-            this.button_Save.Location = new System.Drawing.Point(276, 19);
+            this.button_Save.Location = new System.Drawing.Point(275, 19);
             this.button_Save.Name = "button_Save";
             this.button_Save.Size = new System.Drawing.Size(69, 23);
             this.button_Save.TabIndex = 11;
@@ -158,7 +161,7 @@
             this.groupBox_Templates.Controls.Add(this.button_Save);
             this.groupBox_Templates.Location = new System.Drawing.Point(12, 12);
             this.groupBox_Templates.Name = "groupBox_Templates";
-            this.groupBox_Templates.Size = new System.Drawing.Size(353, 55);
+            this.groupBox_Templates.Size = new System.Drawing.Size(353, 53);
             this.groupBox_Templates.TabIndex = 14;
             this.groupBox_Templates.TabStop = false;
             this.groupBox_Templates.Text = "Templates";
@@ -173,11 +176,41 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button_SaveToFile_Click);
             // 
+            // WSLink
+            // 
+            this.WSLink.Location = new System.Drawing.Point(12, 96);
+            this.WSLink.Name = "WSLink";
+            this.WSLink.Size = new System.Drawing.Size(346, 20);
+            this.WSLink.TabIndex = 15;
+            // 
+            // label_link
+            // 
+            this.label_link.AutoSize = true;
+            this.label_link.Location = new System.Drawing.Point(12, 80);
+            this.label_link.Name = "label_link";
+            this.label_link.Size = new System.Drawing.Size(89, 13);
+            this.label_link.TabIndex = 16;
+            this.label_link.Text = "WebService Link";
+            this.label_link.Click += new System.EventHandler(this.label1_Click);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(283, 122);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 17;
+            this.button2.Text = "FIll Fields";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // Form_Connection
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(368, 274);
+            this.ClientSize = new System.Drawing.Size(368, 395);
+            this.Controls.Add(this.WSLink);
+            this.Controls.Add(this.label_link);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.groupBox_Templates);
             this.Controls.Add(this.button_Cancel);
             this.Controls.Add(this.button_OK);
@@ -215,5 +248,8 @@
         private System.Windows.Forms.ComboBox comboBox_Templates;
         private System.Windows.Forms.GroupBox groupBox_Templates;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TextBox WSLink;
+        private System.Windows.Forms.Label label_link;
+        private System.Windows.Forms.Button button2;
     }
 }

@@ -124,23 +124,26 @@ namespace NSC3_FastTableEdit
             activeWorksheet.UsedRange.EntireColumn.ClearFormats();
             activeWorksheet.UsedRange.EntireColumn.Borders.LineStyle = Excel.XlLineStyle.xlLineStyleNone;
 
+            if (Form_TableColumnsLoad.typeDictionary == null)
+                Form_TableColumnsLoad.CreateTypeDictionary(Class_Table.tableNumber.ToString());
+
             char invisible = '\u2063';
             int column = 1;
             bool headerPresent = false;
-            while(((Excel.Range)activeWorksheet.Cells[2, column]).Value2 != null)
+            while(((Excel.Range)activeWorksheet.Cells[3, column]).Value2 != null)
             {
-                string text = ((Excel.Range)activeWorksheet.Cells[2, column]).Text;
+                string text = ((Excel.Range)activeWorksheet.Cells[3, column]).Text;
                 if (text.Contains(invisible))
                 {
                     headerPresent = true;
-                    ((Excel.Range)activeWorksheet.Cells[2, column]).Value2 = null;
+                    ((Excel.Range)activeWorksheet.Cells[3, column]).Value2 = null;
                 }
                 column++;
             }
 
             if(!headerPresent)
             {
-                Excel.Range line = (Excel.Range)activeWorksheet.Rows[2];
+                Excel.Range line = (Excel.Range)activeWorksheet.Rows[3];
                 line.Insert(Excel.XlInsertShiftDirection.xlShiftDown,false);
             }
             int iterator = 0;
@@ -148,16 +151,27 @@ namespace NSC3_FastTableEdit
             {
                 iterator = i + 1;
                 
-                ((Excel.Range)activeWorksheet.Cells[2, iterator]).Value2 = invisible + headerList[i];
+                ((Excel.Range)activeWorksheet.Cells[3, iterator]).Value2 = invisible + headerList[i];
+                ((Excel.Range)activeWorksheet.Cells[3, iterator]).Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Silver);
+                ((Excel.Range)activeWorksheet.Cells[3, iterator]).ColumnWidth = 15;
+                ((Excel.Range)activeWorksheet.Range[activeWorksheet.Cells[3, 1], activeWorksheet.Cells[3, headerList.Count]]).EntireColumn.Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
+
+                string trimmedHeader;
+                trimmedHeader = headerList[i].TrimStart('*');
+                trimmedHeader = trimmedHeader.TrimStart(' ');
+                ((Excel.Range)activeWorksheet.Cells[2, iterator]).Value2 = invisible + Form_TableColumnsLoad.typeDictionary[trimmedHeader];
                 ((Excel.Range)activeWorksheet.Cells[2, iterator]).Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Silver);
                 ((Excel.Range)activeWorksheet.Cells[2, iterator]).ColumnWidth = 15;
-                ((Excel.Range)activeWorksheet.Range[activeWorksheet.Cells[2, 1], activeWorksheet.Cells[2, headerList.Count]]).EntireColumn.Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
+                ((Excel.Range)activeWorksheet.Range[activeWorksheet.Cells[2, 1], activeWorksheet.Cells[3, headerList.Count]]).EntireColumn.Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
             }
             ((Excel.Range)activeWorksheet.Cells[1, 1]).Value2 = invisible + Class_Template.currentTemplate.Name;
+            ((Excel.Range)activeWorksheet.Cells[1, 2]).Value2 = invisible + Class_Table.tableName;
 
             Globals.ThisAddIn.Application.Cells.Locked = false;
             ((Excel.Range)activeWorksheet.Cells[1, 1]).Locked = true;
             ((Excel.Range)activeWorksheet.Cells[1, 1]).Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Silver);
+            ((Excel.Range)activeWorksheet.Cells[1, 2]).Locked = true;
+            ((Excel.Range)activeWorksheet.Cells[1, 2]).Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Silver);
             ((Excel.Range)activeWorksheet.Range[activeWorksheet.Cells[2, 1], activeWorksheet.Cells[2, headerList.Count]]).Locked = true;
             activeWorksheet.Protect();
         }
@@ -198,6 +212,7 @@ namespace NSC3_FastTableEdit
                     {
                         Class_Table.SetTable(Class_Template.currentTemplate.TableNo, Class_Template.currentTemplate.Fields);
                         Globals.ThisAddIn.Application.ActiveWorkbook.Save();
+
                         SaveDataToXML();
                         if(!errorOccured)
                             MessageBox.Show("Successfully inserted records", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -261,7 +276,7 @@ namespace NSC3_FastTableEdit
             data.AppendChild(table);
 
             Excel.Worksheet activeWorksheet = Globals.ThisAddIn.Application.ActiveSheet;
-            int rowCounter = 3;
+            int rowCounter = 4;
 
             currentTableChosenColumns = Class_Table.tableFieldList;
 
@@ -299,10 +314,12 @@ namespace NSC3_FastTableEdit
 
                 tableContent.AppendChild(record);
                 rowCounter++;
-                data.Save(@"C:/datata.txt");
+                //data.Save(@"C:/datata.txt");
             }
             try
             {
+                //MessageBox.Show(Class_Connection.navCodeunitService.UseDefaultCredentials.ToString());
+                //MessageBox.Show(Class_Connection.navCodeunitService.Url);
                 Class_Connection.navCodeunitService.ProcessData(data.InnerXml);
             }
             catch(Exception ex)

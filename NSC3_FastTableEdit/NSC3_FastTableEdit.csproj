@@ -30,10 +30,10 @@
     <DefineConstants>VSTO40</DefineConstants>
     <IsWebBootstrapper>False</IsWebBootstrapper>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <PublishUrl>C:\Users\Administrator\Downloads\plugin\plugin\plugin\</PublishUrl>
+    <PublishUrl>C:\Users\Administrator\Downloads\noMessagesPlugin\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.0.0.5</ApplicationVersion>
+    <ApplicationVersion>1.0.0.14</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
@@ -238,6 +238,7 @@
     </Compile>
     <None Include="app.config" />
     <None Include="NSC3_FastTableEdit_1_TemporaryKey.pfx" />
+    <None Include="NSC3_FastTableEdit_2_TemporaryKey.pfx" />
     <None Include="NSC3_FastTableEdit_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -313,10 +314,10 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>NSC3_FastTableEdit_1_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>NSC3_FastTableEdit_2_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>0F1DE5C39BBC3110BD5BE85314363589ED400AE0</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>4A0AA087498D2C05F45FE4A73920699E4FF0B444</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>

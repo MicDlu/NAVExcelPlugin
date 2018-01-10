@@ -263,10 +263,14 @@
 
             string[] uniqueTableFieldList = tableFieldList.Where(x => x.PrimaryKey == 0).Select(x => x.FieldName.ToString()).Distinct().ToArray(); //string.Concat(x.FieldName + " \"" + x.Field_Caption + "\"") - dla nazwy i captiona
 
-            string[] primaryKeyTableFieldList = tableFieldList.Where(x => x.PrimaryKey > 0).Select(x => string.Concat("* ", x.FieldName)).Distinct().ToArray();
+            string[] primaryKeyTableFieldList = tableFieldList.Where(x => x.PrimaryKey > 0).OrderBy(o => o.PrimaryKey).Select(x => string.Concat("* ", x.FieldName)).Distinct().ToArray();
+            
 
             numberDictionary = new Dictionary<string, int>();
             numberDictionary = tableFieldList.Select(x => new { num = x.No, name = x.FieldName }).ToDictionary(d => d.name, d => d.num);
+
+            typeDictionary = new Dictionary<string, string>();
+            typeDictionary = tableFieldList.Select(x => new { type = x.Type.ToString(), name = x.FieldName }).ToDictionary(d => d.name, d => d.type);
 
             this.listBox_Columns.Items.Clear();
             this.currentTableFieldList = uniqueTableFieldList;
@@ -306,6 +310,7 @@
         private string[] currentTableFieldList;
         private string[] currentTablePKeyList;
         public static Dictionary<string,int> numberDictionary;
+        public static Dictionary<string, string> typeDictionary;
         private System.Windows.Forms.GroupBox groupBox_Templates;
         private System.Windows.Forms.Button button_Save;
         private System.Windows.Forms.Button button1;

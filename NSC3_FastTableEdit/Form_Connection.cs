@@ -115,5 +115,25 @@ namespace NSC3_FastTableEdit
         {
 
         }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            string port, server, instance, name;
+
+            server = WSLink.Text.Substring(WSLink.Text.IndexOf(@"http://") + 7, WSLink.Text.IndexOf(@":", 7) - 7);
+            textBox_Server.Text = server;
+            port = WSLink.Text.Substring(WSLink.Text.IndexOf(@":", 7) + 1, WSLink.Text.IndexOf(@"/", WSLink.Text.IndexOf(@":", 7)) - (WSLink.Text.IndexOf(@":", 7) + 1));
+            textBox_Port.Text = port;
+            instance = WSLink.Text.Substring(WSLink.Text.IndexOf(port) + port.Length + 1, WSLink.Text.IndexOf(@"/WS") - (WSLink.Text.IndexOf(port) + port.Length + 1));
+            textBox_Instance.Text = instance;
+            name = WSLink.Text.Substring(WSLink.Text.IndexOf(@"/WS/") + 4, WSLink.Text.IndexOf(@"/", WSLink.Text.IndexOf(@"/WS/") + 4) - (WSLink.Text.IndexOf(@"/WS/") + 4));
+            textBox_Firm.Text = name.Replace("%20", " ");
+
+        }
     }
 }

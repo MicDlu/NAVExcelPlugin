@@ -176,7 +176,7 @@ namespace NSC3_FastTableEdit
                 }
                 catch(Exception ex)
                 {
-                    MessageBox.Show("You don't have the permission to modify this template", "Permission exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(ex.Message, "Saving exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
@@ -190,6 +190,10 @@ namespace NSC3_FastTableEdit
             loadedTemplates = Class_Table.GetTemplateList();
             comboBox_Templates.Items.Clear();
             comboBox_Templates.Items.AddRange(loadedTemplates.ToArray());
+
+            if (typeDictionary == null)
+                CreateTypeDictionary(Class_Table.tableNumber.ToString());
+
             if (comboBox_Table.Text != "")
             {
                 if (comboBox_Templates.Text != "")
@@ -286,6 +290,20 @@ namespace NSC3_FastTableEdit
 
             numberDictionary = new Dictionary<string, int>();
             numberDictionary = tableFieldList.Select(x => new { num = x.No, name = x.FieldName }).ToDictionary(d => d.name, d => d.num);
+        }
+
+        public static void CreateTypeDictionary(string key)
+        {
+            List<Fields_Filter> filterArray = new List<Fields_Filter>();
+            Fields_Filter fieldFilter = new Fields_Filter();
+            fieldFilter.Field = Fields_Fields.TableNo;
+            fieldFilter.Criteria = key;
+            filterArray.Add(fieldFilter);
+
+            Fields[] tableFieldList = Class_Connection.navFieldsService.ReadMultiple(filterArray.ToArray(), null, 0);
+
+            typeDictionary = new Dictionary<string, string>();
+            typeDictionary = tableFieldList.Select(x => new { type = x.Type.ToString(), name = x.FieldName }).ToDictionary(d => d.name, d => d.type);
         }
 
         private XmlElement NewElement(string name)
